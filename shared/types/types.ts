@@ -1,5 +1,6 @@
 export type UserProfile={
     name:string,
+    username:string,
     email:string,
     account:string,
     myURL:string
@@ -7,6 +8,7 @@ export type UserProfile={
 
 export const DUMMY_profile:UserProfile={
     name:'なまえ',
+    username:'namae',
     email:'aaa@gmail.com',
     account:'@aaaa_aaaa',
     myURL:'http://pictomessa.com/u/namae'

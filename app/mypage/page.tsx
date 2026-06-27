@@ -24,6 +24,10 @@ export default function Mypage(){
                     <Label>名前</Label>
                     <p>{DUMMY_profile.name}</p>
                 </div>
+                <div className="mt-4">
+                    <Label>ユーザーID</Label>
+                    <p>{DUMMY_profile.username}</p>
+                </div>
                 <div className="mt-4" >
                     <Label>メールアドレス</Label>
                     <p>{DUMMY_profile.email}</p>
