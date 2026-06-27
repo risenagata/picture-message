@@ -23,7 +23,7 @@ export default function Signup(){
                 />
             
             </div>
-            <div className="mt-4">
+            {/* <div className="mt-4">
                 <Label>パスワード</Label>
                 <Input 
                 type="password" 
@@ -31,7 +31,7 @@ export default function Signup(){
                 className="w-full"
                 />
             
-            </div>
+            </div> */}
 
             <div className="flex justify-center py-4">
                 <Button type="submit" color="primary">登録</Button>
