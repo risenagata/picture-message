@@ -6,22 +6,23 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+
 }
 
 model User {
-  id          String   @id @default(uuid())
+  id          String   @id   //ユーザー識別ID
 
-  email       String   @unique
-  username    String   @unique // URL用
+  email       String   @unique  
+  username    String   @unique // URL用 重複禁止
   displayName String   // 表示名
 
   xAccount  String?
-  avatarUrl   String?
+  avatarUrl   String?  //プロフィール画像URL
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  messages Message[] @relation("ReceivedMessages")
+  messages Message[] @relation("ReceivedMessages") //このユーザー宛に届いたメッセージ一覧
   ngWords NGWord[]
 }
 
@@ -29,7 +30,7 @@ model Message {
   id   String @id @default(uuid())
 
   receiverId   String 
-  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id])  //誰宛のメッセージかの識別
   senderGuestId  String?  
 
   content   String?
@@ -39,7 +40,7 @@ model Message {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@index([receiverId])
+  @@index([receiverId])  //検索高速化
 
 }
 
