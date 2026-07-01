@@ -1,15 +1,19 @@
 //マイページ
 
+import { prisma } from "@/lib/prisma";
 import Button from "@/shared/components/Button";
 import Copy from "@/shared/components/Copy";
 import Label from "@/shared/components/Label";
 import PageTitle from "@/shared/components/PageTitle";
-import { DUMMY_profile } from "@/shared/types/types";
 
 
 
 
-export default function Mypage(){
+
+export default async function Mypage(){
+
+    const user = await prisma.user.findFirst() 
+
     return(
         <div className="m-5 flex flex-col items-center">
             <PageTitle>マイページ</PageTitle>
@@ -22,25 +26,25 @@ export default function Mypage(){
             <div className="w-full max-w-md">
                 <div className="mt-4">
                     <Label>名前</Label>
-                    <p>{DUMMY_profile.name}</p>
+                    <p>{user?.displayName}</p>
                 </div>
                 <div className="mt-4">
                     <Label>ユーザーID</Label>
-                    <p>{DUMMY_profile.username}</p>
+                    <p>{user?.username}</p>
                 </div>
                 <div className="mt-4" >
                     <Label>メールアドレス</Label>
-                    <p>{DUMMY_profile.email}</p>
+                    <p>{user?.email}</p>
                 </div>
                 <div className="mt-4">
                     <Label>アカウント</Label>
-                    <p>{DUMMY_profile.account}</p>
+                    <p>{user?.xAccount}</p>
                 </div>
                 <div className="my-4">
                     <Label>マイURL</Label>
 
                         <div className="flex items-center gap-4">
-                            <p className="border-b-1">{DUMMY_profile.myURL}</p>
+                            <p className="border-b-1">http://pictmessa.com/u/{user?.username}</p>
                             <Copy />
                         </div>
 
