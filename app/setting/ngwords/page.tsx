@@ -15,6 +15,7 @@ export default async function SettingNGWord(){
             userId:"1",
         }
     })
+    
 
     return(
         <div className="m-5 flex flex-col items-center">
