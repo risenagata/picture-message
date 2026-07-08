@@ -3,6 +3,8 @@
 import { prisma } from "@/lib/prisma";
 import Card from "@/shared/components/Card";
 import PageTitle from "@/shared/components/PageTitle";
+import { formatDistanceToNow } from "date-fns";
+import { ja } from "date-fns/locale";
 import Link from "next/link";
 
 
@@ -21,8 +23,12 @@ export default async function MessageBox(){
             {createdAt:"desc"}
         ]
     })
+   
+
 
     return(
+
+        
         <div className="m-5 flex flex-col items-center">
             <PageTitle>受信箱</PageTitle>
 
@@ -30,11 +36,20 @@ export default async function MessageBox(){
                 <div key={message.id} className="w-full max-w-2xl mb-4">
                     <Link href={`/message/${message.id}`}>
                         <Card className={message.isRead ? "bg-gray-200" : ""}>
-                            <p className="text-xs text-gray-300">{message.createdAt.toLocaleDateString()}</p>
+                            <p className="text-xs text-gray-300">
+                                {formatDistanceToNow(new Date(message.createdAt),
+                                {
+                                    addSuffix:true,
+                                    locale:ja
+                                })}
+                                
+                            </p>
                             {message.content && 
                             (<p className="line-clamp-1">
                             {message.content}
                             </p>)}
+
+
                         </Card>
                         
                     </Link>
