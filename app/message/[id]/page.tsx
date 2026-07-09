@@ -1,11 +1,9 @@
 //メッセージ詳細
 
+import { prisma } from "@/lib/prisma";
 import Button from "@/shared/components/Button";
 import Card from "@/shared/components/Card";
-import { DUMMY_messages } from "@/shared/types/types";
 import { FaXTwitter } from "react-icons/fa6";
-
-
 
 
 export default async function MessageDetail({
@@ -16,7 +14,20 @@ export default async function MessageDetail({
 
   const {id}=await params
 
-  const message=DUMMY_messages.find((m)=>m.id===id)
+  const message=await prisma.message.findUnique({
+    where:{
+      id
+    }
+  })
+
+  await prisma.message.update({
+    where:{
+      id
+    },
+    data:{
+      isRead:true
+    }
+  })
 
 
 
