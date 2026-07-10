@@ -1,26 +1,41 @@
 //メッセージ作成画面
 
+import { prisma } from "@/lib/prisma";
 import Button from "@/shared/components/Button";
 import PageTitle from "@/shared/components/PageTitle";
 import Textarea from "@/shared/components/Textarea";
-import { DUMMY_profile } from "@/shared/types/types";
+
 import { IoSendSharp } from "react-icons/io5";
+import createMessage from "./action";
 
 
-export default function MessageCreate(){
+export default async function MessageCreate({params}:{params:Promise<{username:string}>}){
+
+    const {username}=await params
+    const user=await prisma.user.findUnique({
+        where:{
+            username
+        }
+    })
 
 
     return(
         <div className="m-5 flex flex-col items-center">
-            <PageTitle>{DUMMY_profile.name}さんへメッセージを送る</PageTitle>
+            <PageTitle>{user?.displayName}さんへメッセージを送る</PageTitle>
             <div className="w-32 h-32 rounded-full bg-gray-300 overflow-hidden">
                 {/* imgやImage */}
             </div>
-            <form className="w-full max-w-2xl flex flex-col gap-4 pt-4">
+            <form 
+            className="w-full max-w-2xl flex flex-col gap-4 pt-4"
+            action={createMessage}
+            >
+                <input type="hidden" name="receiverId" value={user?.id} />
                 <Textarea 
                 placeholder="これからも応援しています！"
-                className="flex-1 w-full max-w-2xl min-h-[300px]  p-4 text-lg"
+                className="flex-1 w-full max-w-2xl min-h-[300px]  p-4 text-lg border-gray-400"
+                name="message"
                 />
+                
                 
                 <div className="w-full max-w-2xl flex justify-between items-center gap-2">
                     <div className="flex items-center gap-2">
@@ -32,7 +47,7 @@ export default function MessageCreate(){
                         <p className="text-sm text-gray-500">キャンバスを追加する</p>                    
                     </div>
 
-                    <Button>
+                    <Button type="submit">
                         <IoSendSharp />
                         送信
                     </Button>

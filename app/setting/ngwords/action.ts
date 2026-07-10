@@ -39,6 +39,6 @@ export async function deleteWord(formData:FormData) {
         where:{id}
     })
 
-    revalidatePath("/setting/ng")
+    revalidatePath("/setting/ngwords")
     
 }
