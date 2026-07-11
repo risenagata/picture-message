@@ -2,13 +2,22 @@
 import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
 
+type MessageState={
+    success:boolean,
+    message:string
+}
 
-export default async function createMessage(formData:FormData){
+export default async function createMessage(_:MessageState,formData:FormData):Promise<MessageState>{
 
     const receiverId=formData.get('receiverId') as string
 
     const thanksMessage=(formData.get('message') as string).trim()
-    if(!thanksMessage)return
+    if(!thanksMessage){
+        return{
+            success:false,
+            message:"メッセージを入力してください"
+        }
+    }
 
     const ngWords=await prisma.nGWord.findMany({
     where:{
@@ -16,8 +25,25 @@ export default async function createMessage(formData:FormData){
     }
     })
 
-    if(ngWords.some((ng)=>thanksMessage.includes(ng.word)))return
+    if(ngWords.some((ng)=>thanksMessage.includes(ng.word))){
+        return{
+            success:false,
+            message:"NGワードが含まれているため送信できませんでした"
+        }
+    }
 
+
+    const user = await prisma.user.findUnique({
+        where: {
+            id: receiverId,
+        },
+    })
+    if(!user){
+        return{
+            success:false,
+            message:"ユーザーが見つかりません"
+        }
+    }
 
     await prisma.message.create({
         data:{
@@ -26,13 +52,9 @@ export default async function createMessage(formData:FormData){
         }
     })
 
-    const user = await prisma.user.findUnique({
-        where: {
-            id: receiverId,
-        },
-    })
-    if(!user)return
+    return{
+        success:true,
+        message:`${user.displayName}さんに感想を送りました`
+    }
 
-    
-    redirect(`/u/${user?.username}`)
 }
