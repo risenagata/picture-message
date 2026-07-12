@@ -1,11 +1,10 @@
 //ログイン画面
 
 import Button from "@/shared/components/Button";
-import Input from "@/shared/components/Input";
-import Label from "@/shared/components/Label";
 import PageTitle from "@/shared/components/PageTitle";
 import { FaXTwitter } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
+import LoginForm from "./LoginForm";
 
 export default function Signin(){
     return(
@@ -13,32 +12,8 @@ export default function Signin(){
         
         <div className="m-5 flex flex-col items-center">
             <PageTitle>ログイン</PageTitle>
-            <form className="w-full max-w-md">
-                <div>
-                <Label>メールアドレス</Label>
-                <Input 
-                type="email" 
-                placeholder="example@mail.com"
-                className="w-full"
-                />
-            
-            </div>
-            <div className="mt-4">
-                <Label>パスワード</Label>
-                <Input 
-                type="password" 
-                placeholder="6文字以上の英数字"
-                className="w-full"
-                />
-            
-            </div>
 
-            <div className="flex justify-center py-4">
-                <Button type="submit" color="primary">ログイン</Button>
-            </div>
-
-
-            </form>
+                <LoginForm />
             
 
             <div className="flex items-center w-full max-w-md my-5">

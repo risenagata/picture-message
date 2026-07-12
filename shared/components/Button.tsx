@@ -1,3 +1,4 @@
+import { ButtonHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 import { tv } from "tailwind-variants";
 
@@ -18,16 +19,18 @@ const buttonVariants=tv({
     }
 })
 
-type ButtonProps={
+type ButtonProps=
+    ButtonHTMLAttributes<HTMLButtonElement>&
+{
     children:React.ReactNode,
     type?: 'button' | 'submit' | 'reset';
     color?: 'primary' | 'secondary' | 'danger' | 'black'| 'others';
     className?:string
 }
 
-export default function Button({children,type='button',color,className}:ButtonProps){
+export default function Button({children,type='button',color,className,...props}:ButtonProps){
     return(
-    <button className={twMerge(buttonVariants({ color }),className)} type={type}>
+    <button {...props} className={twMerge(buttonVariants({ color }),className)} type={type}>
       {children}
     </button>
     )

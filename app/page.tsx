@@ -1,12 +1,13 @@
 
-import Setting from "./setting/page";
+import Signin from "./auth/signin/page";
+
 
 
 export default function Home() {
   return (
 
       <>
-        <Setting />
+        <Signin />
 
       </>
 
