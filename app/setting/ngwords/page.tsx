@@ -8,6 +8,7 @@ import addNGWord, { deleteWord } from "./action";
 
 
 
+
 export default async function SettingNGWord(){
 
     const NGWords=await prisma.nGWord.findMany({
