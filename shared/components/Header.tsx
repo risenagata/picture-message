@@ -40,8 +40,13 @@ export default function Header({isLoggedIn}:HeaderProps){
             ):(
                 <>
                 <div className="flex justify-center items-center gap-2">
-                    <Button color="secondary">新規登録</Button>
-                    <Button color="secondary">ログイン</Button>
+                    <Link href="/auth/signup/">
+                        <Button color="secondary">新規登録</Button>
+                    </Link>
+                    <Link href="/auth/signin/">
+                        <Button color="secondary">ログイン</Button>
+                    </Link>
+                    
                 </div>
                 </>
             )
