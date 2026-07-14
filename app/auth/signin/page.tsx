@@ -24,9 +24,9 @@ export default function Signin(){
             <div className="flex-1 border-b border-gray-300" />
             </div>
 
-            <div className="flex flex-col gap-5">
-                <Button color="others"><FaXTwitter/>でログイン</Button>
-                <Button color="others"><FcGoogle/>でログイン</Button>
+            <div className="flex flex-col gap-5 items-center">
+                <Button color="others"><FaXTwitter/>X(Twitter)でログイン</Button>
+                <Button color="others"><FcGoogle/>Googleでログイン</Button>
             </div>
             
     
