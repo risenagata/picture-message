@@ -62,7 +62,7 @@ export default function SignupForm(){
                     <Label>パスワード</Label>
                     <Input 
                     type="password" 
-                    placeholder="6文字以上の英数字"
+                    placeholder="8文字以上の英数字"
                     className="w-full"
                     {...register("password")}
                     />
