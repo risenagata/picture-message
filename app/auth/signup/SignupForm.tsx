@@ -34,7 +34,10 @@ export default function SignupForm(){
             const supabase=createClient()
             const {error}=await supabase.auth.signUp({
                 email:data.email,
-                password:data.password
+                password:data.password,
+                options:{
+                    emailRedirectTo:"http://localhost:3000//auth/callback"
+                }
             })
             if(error){
                 toast.error(error.message)
