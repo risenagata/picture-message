@@ -1,8 +1,6 @@
 //新規登録画面
 
 import Button from "@/shared/components/Button";
-import Input from "@/shared/components/Input";
-import Label from "@/shared/components/Label";
 import PageTitle from "@/shared/components/PageTitle";
 import { FaXTwitter } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";

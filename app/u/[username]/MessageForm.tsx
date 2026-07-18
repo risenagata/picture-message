@@ -23,7 +23,7 @@ export default function MessageForm({receiverId}:Props){
         toast.error(state.message)
     }
    },[state])
-
+   
     return(
             <form 
             className="w-full max-w-2xl flex flex-col gap-4 pt-4"
