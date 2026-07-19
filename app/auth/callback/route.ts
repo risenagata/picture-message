@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server"
 import { NextResponse } from "next/server";
 
-export default async function GET(request:Request){
+export async function GET(request:Request){
     const {searchParams}=new URL(request.url)
 
     const code =searchParams.get("code")
@@ -12,6 +12,12 @@ export default async function GET(request:Request){
         const supabase=await createClient()
 
         await supabase.auth.exchangeCodeForSession(code)
+
+
+        const {
+        data: { user },
+        } = await supabase.auth.getUser();
+
     }
 
     return NextResponse.redirect(
