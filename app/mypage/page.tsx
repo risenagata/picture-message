@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import Button from "@/shared/components/Button";
 import Copy from "@/shared/components/Copy";
 import Label from "@/shared/components/Label";
+import { LogoutButton } from "@/shared/components/LogoutButton";
 import PageTitle from "@/shared/components/PageTitle";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -65,7 +66,6 @@ export default async function Mypage(){
                             
                         </div>
 
-                        {/* トースト通知実装忘れずに */}
 
                     
                 </div>
@@ -73,7 +73,7 @@ export default async function Mypage(){
             </div>
             
             <div className="p-8">
-                <Button color="danger">ログアウト</Button>
+                <LogoutButton />
             </div>
 
 
