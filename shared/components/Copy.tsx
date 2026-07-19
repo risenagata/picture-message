@@ -1,11 +1,16 @@
 //URLをクリップボードにコピーする実装
 'use client'
 import { FaRegCopy } from "react-icons/fa6"
-import { DUMMY_profile } from "../types/types"
 
-export default function Copy(){
+
+type CopyProps={
+    username:string
+}
+
+export default function Copy({username}:CopyProps){
     const clickHandler=async()=>{
-        const message=DUMMY_profile.myURL
+        
+        const message=`http://pictmessa.com/u/${username}`
         
         try{
             await navigator.clipboard.writeText(message)
