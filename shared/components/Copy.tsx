@@ -1,6 +1,7 @@
 //URLをクリップボードにコピーする実装
 'use client'
 import { FaRegCopy } from "react-icons/fa6"
+import { toast } from "sonner"
 
 
 type CopyProps={
@@ -14,9 +15,9 @@ export default function Copy({username}:CopyProps){
         
         try{
             await navigator.clipboard.writeText(message)
-            alert('コピーしました')
+            toast.success('コピーしました')
         }catch(error){
-            alert('コピーできませんでした')
+            toast.error('コピーできませんでした')
         }
     }
     

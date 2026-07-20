@@ -1,7 +1,6 @@
 //マイページ
 
 import { prisma } from "@/lib/prisma";
-import Button from "@/shared/components/Button";
 import Copy from "@/shared/components/Copy";
 import Label from "@/shared/components/Label";
 import { LogoutButton } from "@/shared/components/LogoutButton";

@@ -1,16 +1,28 @@
 'use server'
 
 import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { createClient } from "@/utils/supabase/server";
 
 
-export async function updateDisplayName(formData: FormData) {
+type DisplayNameState={
+  success:boolean,
+  message:string
+}
+
+
+export async function updateDisplayName(_:DisplayNameState,formData: FormData):Promise<DisplayNameState> {
   const displayName = formData.get("displayName") as string;
 
-  const user = await prisma.user.findFirst();
+  const supabase=await createClient()
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return;
+  if (!user){
+    return{
+      success:false,
+      message:"ログインしてください"
+    }
+  }
+
 
   await prisma.user.update({
     where: {
@@ -21,6 +33,13 @@ export async function updateDisplayName(formData: FormData) {
     },
   });
 
-  revalidatePath('/','layout')
-  redirect('/setting')
+
+  return{
+    success:true,
+    message:"保存しました"
+  }
+
+
+
+  
 }

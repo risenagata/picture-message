@@ -64,7 +64,7 @@ export default async function createProfileAction(_:ProfileState,formData:FormDa
         email: user.email!,
         displayName,
         username
-  },
+        },
 
 
     });
@@ -72,7 +72,7 @@ export default async function createProfileAction(_:ProfileState,formData:FormDa
     return{
     success:true,
     message:"ようこそ、ピクトメッセへ！"
-  }
+    }
 
 
 } 
