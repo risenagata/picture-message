@@ -5,6 +5,7 @@ import Link from "next/link";
 const settingItems = [
   { title: "名前の変更", href: "/setting/profile" },
   { title: "プロフィール画像の変更", href: "/setting/image" },
+  { title: "ユーザーIDの変更", href: "/setting/username" },
   { title: "メールアドレスの変更", href: "/setting/email" },
   { title: "パスワードの変更", href: "/setting/password" },
   { title: "NGワード設定", href: "/setting/ngwords" },
