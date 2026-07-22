@@ -36,7 +36,7 @@ export default function SignupForm(){
                 email:data.email,
                 password:data.password,
                 options:{
-                    emailRedirectTo:"http://localhost:3000/auth/callback"
+                    emailRedirectTo:"http://localhost:3000/auth/callback?next=/onboarding"
                 }
             })
 

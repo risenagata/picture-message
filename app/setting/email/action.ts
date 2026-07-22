@@ -1,26 +1,42 @@
 'use server'
 
-import { prisma } from "@/lib/prisma"
-import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
 
-export default async function updateEmail(formData:FormData){
+import { createClient } from "@/utils/supabase/server"
+
+
+type EmailState={
+  success:boolean,
+  message:string
+}
+
+export default async function updateEmail(_:EmailState,formData:FormData){
     const email=formData.get("email") as string
 
-    const user=await prisma.user.findFirst()
-    if(!user) return
+    const supabase=await createClient()
+    const { data: { user } } = await supabase.auth.getUser();
 
-    await prisma.user.update({
-        where: {
-        id: user.id,
-        },
-        data: {
-        email,
-        },
+    if (!user){
+    return{
+        success:false,
+        message:"ログインしてください"
+    }
+    }
+
+    const { error } = await supabase.auth.updateUser({
+        email
     });
 
-    revalidatePath('/','layout')
-    redirect('/setting')
+    if(error){
+        return{
+            success:false,
+            message:error.message
 
-    
+        }
+    }
+
+    return{
+        success:true,
+        message:"確認メールを送信しました"
+    }
+        
 }
