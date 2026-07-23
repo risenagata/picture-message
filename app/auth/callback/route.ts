@@ -18,7 +18,8 @@ export async function GET(request:Request){
         return NextResponse.redirect(
             new URL("/auth/signin", request.url)
         );
-    }
+        }
+        
 
 
         const {
@@ -34,7 +35,7 @@ export async function GET(request:Request){
         const next = searchParams.get("next") ?? "/mypage";
 
         // supabaseで変更したメールアドレスをprismaにも同期させる（Userテーブルにemailがあるので）
-        if (next === "/setting/email") {
+        if (next === "/setting") {
         await prisma.user.update({
             where: {
             id: user.id,

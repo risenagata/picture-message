@@ -22,9 +22,12 @@ export default async function updateEmail(_:EmailState,formData:FormData){
     }
     }
 
-    const { error } = await supabase.auth.updateUser({
-        email
-    });
+    const { error } = await supabase.auth.updateUser(
+        {email},
+        {
+            emailRedirectTo:"http://localhost:3000/auth/callback?next=/setting"
+        }
+    );
 
     if(error){
         return{
