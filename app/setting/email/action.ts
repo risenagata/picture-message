@@ -37,6 +37,7 @@ export default async function updateEmail(_:EmailState,formData:FormData){
         }
     }
 
+
     return{
         success:true,
         message:"確認メールを送信しました"

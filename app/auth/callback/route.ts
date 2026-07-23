@@ -19,7 +19,7 @@ export async function GET(request:Request){
             new URL("/auth/signin", request.url)
         );
         }
-        
+  
 
 
         const {
