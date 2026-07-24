@@ -5,19 +5,28 @@ import { createClient } from "@/utils/supabase/server"
 import { NextResponse } from "next/server";
 
 export async function GET(request:Request){
-    const {searchParams}=new URL(request.url)
-    console.log("searchParams:",searchParams.toString());
+    
+    const { searchParams, origin } = new URL(request.url);
+    const code = searchParams.get("code");
+    const error = searchParams.get("error");
+    const next = searchParams.get("next") ?? "/setting";
 
-    const code =searchParams.get("code")
+    console.log(request.url);
+
+    //リンク無効・期限切れエラー
+    if(error){
+        return NextResponse.redirect(
+            new URL(`/setting/email?error=${error}`, origin)
+        )
+    }
+
 
     if(code){
         const supabase=await createClient()
 
-        const {error} =await supabase.auth.exchangeCodeForSession(code)
-        if (error) {
-        return NextResponse.redirect(
-            new URL("/auth/signin", request.url)
-        );
+        const {error:exchangeError} =await supabase.auth.exchangeCodeForSession(code)
+        if (exchangeError) {
+        return NextResponse.redirect(new URL("/auth/signin", origin));
         }
   
 
@@ -26,35 +35,35 @@ export async function GET(request:Request){
         data: { user },
         } = await supabase.auth.getUser();
 
+
+
         if(!user){
         return NextResponse.redirect(
-        new URL("/auth/signin", request.url)
+        new URL("/auth/signin", origin)
         );
         }
+
 
         const next = searchParams.get("next") ?? "/mypage";
 
         // supabaseで変更したメールアドレスをprismaにも同期させる（Userテーブルにemailがあるので）
-        if (next === "/setting") {
         await prisma.user.update({
-            where: {
-            id: user.id,
-            },
-            data: {
-            email: user.email!,
-            },
-        });
-        }
-
+            where:{id:user.id},
+            data:{email:user.email}
+        })
         return NextResponse.redirect(
-        new URL(next,request.url)
-        );
+            new URL(`${next}?verified=1`,origin)
+        )
+
+  
         
         
     }
 
 
-    
+    return NextResponse.redirect(
+    new URL("/auth/signin",origin)
+    );
 
 
 
