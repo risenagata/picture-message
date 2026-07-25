@@ -1,19 +1,28 @@
 //NGワード設定画面
 
 import { prisma } from "@/lib/prisma";
-import Button from "@/shared/components/Button";
-import Input from "@/shared/components/Input";
+
 import PageTitle from "@/shared/components/PageTitle";
 import addNGWord, { deleteWord } from "./action";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+import SettingNgWordForm from "./SettingNgWordForm";
 
 
 
 
 export default async function SettingNGWord(){
 
+    const supabase=await createClient()
+    const {data:{user}}=await supabase.auth.getUser()
+    if(!user){
+        redirect("/auth/signin")
+    }
+
+    // 特定ユーザーのNGワードの一覧取得
     const NGWords=await prisma.nGWord.findMany({
         where:{
-            userId:"1",
+            userId:user.id
         }
     })
     
@@ -21,10 +30,9 @@ export default async function SettingNGWord(){
     return(
         <div className="m-5 flex flex-col items-center">
             <PageTitle>NGワード設定</PageTitle>
-            <form action={addNGWord} className="w-full max-w-md flex  gap-2 pt-6">
-                <Input type="text" name="word" className="flex-1"/>
-                <Button type="submit">保存</Button>
-            </form>
+
+            <SettingNgWordForm ngWords={NGWords}/>
+            
             <p className="text-xs text-red-300 pt-2">
                 複数の単語を登録する場合は、1つ保存してから次の単語を入力してください
             </p>
@@ -36,7 +44,8 @@ export default async function SettingNGWord(){
 
                             <span>{w.word}</span>
                             <form action={deleteWord}>
-                                <input type="hidden"
+                                <input 
+                                type="hidden"
                                 name="id"
                                 value={w.id}
                                 />

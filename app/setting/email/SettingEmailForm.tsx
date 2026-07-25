@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
 
 const emailSchema=z.object({
     email:z.email("有効なメールアドレスを入力してください")
@@ -29,27 +30,43 @@ export default function SettingEmailForm({email}:Props){
                     }
     })
 
-    const settingEmail=async(data:EmailFormValues)=>{
-        const formData = new FormData();
-        formData.append("email",data.email)
-
-        const result=await updateEmail(
-            {
-                success:false,
-                message:""
-            },
-            formData
+    const SettingEmail=async(data:EmailFormValues)=>{
+        const supabase=await createClient()
+        const {error}=await supabase.auth.updateUser(
+        {email:data.email},
+        {
+            emailRedirectTo:"http://localhost:3000/auth/callback?next=/setting"
+        }
         )
-        if(result.success){
-            toast.success(result.message)
-            router.push("/setting")
+
+        if(error){
+            toast.error(error.message)
             return
         }
-        toast.error(result.message)
+        toast.success("確認メールを送信しました。メールをご確認ください。")
     }
 
+    // const settingEmail=async(data:EmailFormValues)=>{
+    //     const formData = new FormData();
+    //     formData.append("email",data.email)
+
+    //     const result=await updateEmail(
+    //         {
+    //             success:false,
+    //             message:""
+    //         },
+    //         formData
+    //     )
+    //     if(result.success){
+    //         toast.success(result.message)
+    //         router.push("/setting")
+    //         return
+    //     }
+    //     toast.error(result.message)
+    // }
+
     return(
-            <form onSubmit={handleSubmit(settingEmail)} className="w-full max-w-md">
+            <form onSubmit={handleSubmit(SettingEmail)} className="w-full max-w-md">
                 <div className="py-6">
                     <Label>現在のメールアドレス</Label>
                     <p className="mt-2 text-gray-500">{email}</p>

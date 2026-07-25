@@ -9,7 +9,7 @@ export async function GET(request:Request){
     const { searchParams, origin } = new URL(request.url);
     const code = searchParams.get("code");
     const error = searchParams.get("error");
-    const next = searchParams.get("next") ?? "/setting";
+
 
     console.log(request.url);
 
@@ -26,9 +26,10 @@ export async function GET(request:Request){
 
         const {error:exchangeError} =await supabase.auth.exchangeCodeForSession(code)
         if (exchangeError) {
+            console.error("exchange失敗:",exchangeError)
         return NextResponse.redirect(new URL("/auth/signin", origin));
         }
-  
+        
 
 
         const {
@@ -47,10 +48,13 @@ export async function GET(request:Request){
         const next = searchParams.get("next") ?? "/mypage";
 
         // supabaseで変更したメールアドレスをprismaにも同期させる（Userテーブルにemailがあるので）
-        await prisma.user.update({
-            where:{id:user.id},
-            data:{email:user.email}
-        })
+        if(next.startsWith("/setting")){
+            await prisma.user.update({
+                where:{id:user.id},
+                data:{email:user.email}
+            })
+        }
+
         return NextResponse.redirect(
             new URL(`${next}?verified=1`,origin)
         )
