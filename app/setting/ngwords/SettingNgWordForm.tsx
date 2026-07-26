@@ -2,9 +2,9 @@
 import Button from "@/shared/components/Button";
 import Input from "@/shared/components/Input";
 import addNGWord from "./action";
-import { MAX_NGWords, NGWordForm} from "@/shared/types/types";
-import { useForm } from "react-hook-form";
+import { MAX_NGWords } from "@/shared/types/types";
 import { toast } from "sonner";
+import { useActionState, useEffect } from "react";
 
 
 type Props={
@@ -22,43 +22,30 @@ export default function SettingNgWordForm({ngWords}:Props){
 
     const canAdd=ngWords.length < MAX_NGWords
 
-    const {register,handleSubmit,reset}=useForm<NGWordForm>({
-        defaultValues:{
-            word:""
-        }
-    })
+    const [state,formAction]=useActionState(addNGWord,{success:false,message:""})
 
-    const addWord=async(data:NGWordForm)=>{
-        const formData = new FormData();
-        formData.append("word", data.word);
-
-        const result=await addNGWord({
-            success:false,
-            message:""
-        },
-        formData
-        )
-
-        if(result.success){
-            reset()
+    useEffect(()=>{
+        if(!state.message)return
+        if(state.success){
+            return
         }else{
-            toast.error(result.message)
+            toast.error(state.message)
         }
-
-    }
+    },[state])
 
     return(
         <div>
-            <form onSubmit={handleSubmit(addWord)} className="w-full max-w-md flex  gap-2 pt-6">
+            <form action={formAction} className="w-full max-w-md flex  gap-2 pt-6">
                 <Input 
                 type="text" 
                 className="flex-1"
-                {...register("word")}
+                name="word"
                 />
-                <Button type="submit" disabled={!canAdd}>保存</Button>
+                <Button type="submit">保存</Button>
+                
                         
             </form>
-        {!canAdd &&(<p className="text-red-500 text-sm">NGワードは{MAX_NGWords}件まで登録できます</p>)}
+            {!canAdd && (<p className="text-red-500 text-xs">NGワードは{MAX_NGWords}件まで登録できます。これ以上登録できません</p>)}
         </div>
 
 

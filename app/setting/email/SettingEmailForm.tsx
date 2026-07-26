@@ -2,7 +2,6 @@
 import Button from "@/shared/components/Button";
 import Input from "@/shared/components/Input";
 import Label from "@/shared/components/Label";
-import updateEmail from "./action";
 import Link from "next/link";
 import z from "zod";
 import { useForm } from "react-hook-form";

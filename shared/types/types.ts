@@ -35,4 +35,4 @@ export type NGWord = {
     word: string,
 }
 
-export const MAX_NGWords=3
+export const MAX_NGWords=100
