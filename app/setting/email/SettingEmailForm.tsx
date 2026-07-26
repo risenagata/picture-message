@@ -31,7 +31,7 @@ export default function SettingEmailForm({email}:Props){
     })
 
     const SettingEmail=async(data:EmailFormValues)=>{
-        const supabase=await createClient()
+        const supabase= createClient()
         const {error}=await supabase.auth.updateUser(
         {email:data.email},
         {

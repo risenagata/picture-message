@@ -58,7 +58,7 @@ export default function SettingNgWordForm({ngWords}:Props){
                 <Button type="submit" disabled={!canAdd}>保存</Button>
                         
             </form>
-        {/* {!canAdd &&(<p className="text-red-500 text-sm">NGワードは{MAX_NGWords}件まで登録できます</p>)} */}
+        {!canAdd &&(<p className="text-red-500 text-sm">NGワードは{MAX_NGWords}件まで登録できます</p>)}
         </div>
 
 

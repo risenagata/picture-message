@@ -3,16 +3,22 @@
 import { prisma } from "@/lib/prisma";
 import Card from "@/shared/components/Card";
 import PageTitle from "@/shared/components/PageTitle";
+import { createClient } from "@/utils/supabase/server";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 
 // 
 
 export default async function MessageBox(){
 
-    const user=await prisma.user.findFirst()
+    const supabase=await createClient()
+    const { data: { user } } = await supabase.auth.getUser();
+        if(!user){
+        redirect("/auth/signin")
+    }
 
     const messages=await prisma.message.findMany({
         where:{

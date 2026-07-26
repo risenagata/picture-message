@@ -48,7 +48,7 @@ export default async function addNGWord(_:NGWordState,formData:FormData): Promis
             userId:user.id
         }
     })
-    if(count >= MAX_NGWords){
+    if(count > MAX_NGWords){
         return{
             success:false,
             message:`NGワードは${MAX_NGWords}件まで登録できます`
