@@ -6,6 +6,7 @@ import Label from "@/shared/components/Label";
 import { LogoutButton } from "@/shared/components/LogoutButton";
 import PageTitle from "@/shared/components/PageTitle";
 import { createClient } from "@/utils/supabase/server";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 
 
@@ -33,7 +34,13 @@ export default async function Mypage(){
             <PageTitle>マイページ</PageTitle>
             
             <div className="w-32 h-32 rounded-full bg-gray-300 overflow-hidden">
-                {/* imgやImage */}
+                <Image 
+                src={profile.avatarUrl ?? "/user.png"}
+                alt="ユーザー画像"
+                width={128}
+                height={128}
+                className="h-full w-full object-cover rounded-full"
+                />
             </div>
  
 
