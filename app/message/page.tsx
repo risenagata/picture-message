@@ -29,6 +29,15 @@ export default async function MessageBox(){
             {createdAt:"desc"}
         ]
     })
+
+    if(!messages){
+        return(
+        <div className="m-5 flex justify-center items-center">
+         <p className="text-gray-500">まだメッセージは届いていません</p>
+
+        </div>
+        )
+    }
    
     return(
 
@@ -37,7 +46,7 @@ export default async function MessageBox(){
             <PageTitle>受信箱</PageTitle>
 
             {messages.map((message)=>(
-                <div key={message.id} className="w-full max-w-2xl mb-4">
+                <div key={message.id} className="w-full max-w-2xl my-4">
                     <Link href={`/message/${message.id}`}>
                         <Card className={message.isRead ? "bg-gray-200" : ""}>
                             <p className="text-xs text-gray-300">
