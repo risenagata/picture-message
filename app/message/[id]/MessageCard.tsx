@@ -7,7 +7,10 @@ import { useRef } from "react";
 import { FaXTwitter } from "react-icons/fa6";
 
 type Props={
-    message:string | null
+    message:{
+        content:string | null,
+        imageUrl:string | null
+    }
 }
 
 export default function MessageCard({message}:Props){
@@ -18,7 +21,7 @@ export default function MessageCard({message}:Props){
             <div ref={cardRef}>
                 <Card className="w-full max-w-2xl bg-white my-4">
                     {message && (
-                        <p className="whitespace-pre-wrap">{message}</p>
+                        <p className="whitespace-pre-wrap">{message.content}</p>
                     )}
 
                 </Card>

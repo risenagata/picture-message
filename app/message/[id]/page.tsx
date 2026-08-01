@@ -43,7 +43,7 @@ export default async function MessageDetail({
   return (
     <div className="m-5 flex flex-col items-center gap-4">
 
-      <MessageCard message={message.content} />
+      <MessageCard message={message} />
 
     </div>
     
