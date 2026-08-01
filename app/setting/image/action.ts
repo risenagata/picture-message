@@ -102,6 +102,10 @@ export default async function updateImage(_:ImageState,formData:FormData){
     
     revalidatePath("/setting/image")
     revalidatePath("/mypage");
+    if(currentUser){
+        revalidatePath(`/u/${currentUser.username}`)
+    }
+
 
 
     return{
