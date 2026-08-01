@@ -22,7 +22,7 @@ export default async function MessageBox(){
 
     const messages=await prisma.message.findMany({
         where:{
-            receiverId:user!.id
+            receiverId:user.id
         },
         orderBy:[
             {isRead:"asc"},
@@ -30,20 +30,18 @@ export default async function MessageBox(){
         ]
     })
 
-    if(!messages){
-        return(
-        <div className="m-5 flex justify-center items-center">
-         <p className="text-gray-500">まだメッセージは届いていません</p>
-
-        </div>
-        )
-    }
    
     return(
 
         
         <div className="m-5 flex flex-col items-center">
             <PageTitle>受信箱</PageTitle>
+
+            {!messages.length && 
+                (
+                    <p className="text-gray-500 py-4">まだメッセージは届いていません</p>
+                )                               
+            }
 
             {messages.map((message)=>(
                 <div key={message.id} className="w-full max-w-2xl my-4">

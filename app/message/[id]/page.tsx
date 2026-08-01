@@ -1,9 +1,8 @@
 //メッセージ詳細
 
 import { prisma } from "@/lib/prisma";
-import Button from "@/shared/components/Button";
-import Card from "@/shared/components/Card";
-import { FaXTwitter } from "react-icons/fa6";
+import MessageCard from "./MessageCard";
+
 
 
 export default async function MessageDetail({
@@ -11,6 +10,7 @@ export default async function MessageDetail({
 }:{
   params:Promise<{id:string}>
 }) {
+
 
   const {id}=await params
 
@@ -43,18 +43,8 @@ export default async function MessageDetail({
   return (
     <div className="m-5 flex flex-col items-center gap-4">
 
-      <Card className="w-full max-w-2xl bg-white">
-        {message.content && (
-          <p className="whitespace-pre-wrap">{message.content}</p>
-        )}
+      <MessageCard message={message.content} />
 
-      </Card>
-      
-      <p className="text-xs text-gray-500">このメッセージをXで返信できます</p>
-      <Button color="black">
-        <FaXTwitter/>
-        で返信する
-      </Button>
     </div>
     
   );

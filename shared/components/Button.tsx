@@ -10,7 +10,7 @@ const buttonVariants=tv({
             secondary:'bg-white text-yellow-500 border border-yellow-500 hover:text-yellow-300',
             danger:'bg-red-500 text-white hover:bg-red-700',
             black:'bg-black text-white hover:bg-gray-700',
-            others:'bg-white border hover:bg-gray-200'
+            others:'bg-white border hover:border-gray-500'
         },
 
     },
