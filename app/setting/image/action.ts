@@ -26,6 +26,13 @@ export default async function updateImage(_:ImageState,formData:FormData){
     }
     }
 
+    const currentUser=await prisma.user.findUnique({
+        where:{
+            id:user.id
+        }
+    })
+  
+
     if (!avatar || avatar.size === 0) {
         return {
             success: false,
@@ -70,6 +77,28 @@ export default async function updateImage(_:ImageState,formData:FormData){
             avatarUrl:publicUrl
         }
     })
+
+
+    // 古い画像の削除
+    if(currentUser?.avatarUrl){
+        
+        const path=currentUser.avatarUrl.split("/avatars/")[1]
+
+        if(path){
+        const {error:removeError}=await supabase.storage
+        .from("avatars")
+        .remove([path])
+
+        console.log("removeError:",removeError)
+
+        if (removeError) {
+        console.error("古い画像の削除に失敗:", removeError.message);
+         }
+        }
+
+    }
+
+
     
     revalidatePath("/setting/image")
     revalidatePath("/mypage");
