@@ -3,51 +3,30 @@
 import { prisma } from "@/lib/prisma";
 import PageTitle from "@/shared/components/PageTitle";
 import MessageForm from "./MessageForm";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 import Image from "next/image";
 
 
 export default async function MessageCreate({params}:{params:Promise<{username:string}>}){
 
-    const supabase =await createClient()
-    const {data:{user}}=await supabase.auth.getUser()
-    if(!user){
-        redirect("/auth/signin")
-        }
-
-    const profile=await prisma.user.findUnique({
-    where:{
-        id:user.id
-        }
-    })
-    if (!profile) {
-    redirect("/onboarding");
-    }
-
-
+    // URLのusernameからユーザーを取得する
     const {username}=await params
-    const userName =await prisma.user.findUnique({
+    const receiver =await prisma.user.findUnique({
         where:{
             username
         }
     })
-    if(!userName){
+    if(!receiver){
         return(
             <p>ユーザーが見当たりません</p>
         )
     }
 
-
-
-
-
     return(
         <div className="m-5 flex flex-col items-center">
-            <PageTitle>{profile.displayName}さんへメッセージを送る</PageTitle>
+            <PageTitle>{receiver.displayName}さんへメッセージを送る</PageTitle>
             <div className="w-32 h-32 rounded-full bg-gray-300 overflow-hidden">
                 <Image 
-                src={profile.avatarUrl ?? "/user.png"}
+                src={receiver.avatarUrl ?? "/user.png"}
                 alt="ユーザー画像"
                 width={128}
                 height={128}
@@ -55,7 +34,7 @@ export default async function MessageCreate({params}:{params:Promise<{username:s
                 />
             </div>
 
-            <MessageForm receiverId={profile.id} />
+            <MessageForm receiverId={receiver.id} />
             
             
             
