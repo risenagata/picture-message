@@ -1,5 +1,6 @@
 'use server'
 import { prisma } from "@/lib/prisma"
+import { createClient } from "@/utils/supabase/server"
 
 
 type MessageState={
@@ -9,6 +10,7 @@ type MessageState={
 
 export default async function createMessage(_:MessageState,formData:FormData):Promise<MessageState>{
 
+    // メッセージ中身確認
     const receiverId=formData.get('receiverId') as string
 
     const thanksMessage=(formData.get('message') as string).trim()
@@ -19,6 +21,8 @@ export default async function createMessage(_:MessageState,formData:FormData):Pr
         }
     }
 
+
+    // NGワード確認
     const ngWords=await prisma.nGWord.findMany({
     where:{
         userId:receiverId
@@ -33,28 +37,41 @@ export default async function createMessage(_:MessageState,formData:FormData):Pr
     }
 
 
-    const user = await prisma.user.findUnique({
+    // 送信先ユーザーの取得
+    const receiver = await prisma.user.findUnique({
         where: {
             id: receiverId,
         },
     })
-    if(!user){
+    if(!receiver){
         return{
             success:false,
             message:"ユーザーが見つかりません"
         }
     }
 
+    // 匿名送信者情報の取得
+    const supabase=await createClient()
+    const {data:{user}}=await supabase.auth.getUser()
+    if(!user){
+        return{
+            success:false,
+            message:"匿名による送信者情報の取得ができませんでした"
+        }
+    }
+
+    // メッセージ送信
     await prisma.message.create({
         data:{
             receiverId,
+            senderGuestId:user.id,
             content:thanksMessage
         }
     })
 
     return{
         success:true,
-        message:`${user.displayName}さんに感想を送りました`
+        message:`${receiver.displayName}さんに感想を送りました`
     }
 
 }
