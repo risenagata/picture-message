@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { tv } from "tailwind-variants";
 
 const buttonVariants=tv({
-    base:'w-fit py-2 px-4 rounded-full inline-flex items-center justify-center gap-2 active:scale-90 hover:cursor-pointer',
+    base:'w-fit py-2 px-4 rounded-full inline-flex items-center justify-center gap-2 active:scale-90 hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50',
     variants:{
         color:{
             primary:'bg-yellow-500 text-white hover:bg-yellow-300',

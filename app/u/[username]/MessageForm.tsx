@@ -4,17 +4,24 @@ import Textarea from "@/shared/components/Textarea"
 import createMessage from "./action"
 import Button from "@/shared/components/Button"
 import { IoSendSharp } from "react-icons/io5"
-import { startTransition, useActionState, useEffect } from "react"
+import { startTransition, useActionState, useEffect, useState } from "react"
 import { toast } from "sonner"
 import { createClient } from "@/utils/supabase/client"
+import { MAX_Chars } from "@/shared/types/types"
 
 type Props={
     receiverId:string
 }
 
 export default function MessageForm({receiverId}:Props){
-
+    const [chars,setChars]=useState(0)
     const [state,formAction]=useActionState(createMessage,{success:false,message:""})
+
+    const handleChange=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
+        setChars(e.target.value.length)
+    }
+    const isOverLimit=chars > MAX_Chars
+
 
     const handleAction=async(formData:FormData)=>{
         const supabase = createClient()
@@ -51,8 +58,9 @@ export default function MessageForm({receiverId}:Props){
                 placeholder="これからも応援しています！"
                 className="flex-1 w-full max-w-2xl min-h-[300px]  p-4 text-base border-gray-400"
                 name="message"
+                onChange={handleChange}
                 />
-                
+
                 
                 <div className="w-full max-w-2xl flex justify-between items-center gap-2">
                     <div className="flex items-center gap-2">
@@ -63,12 +71,20 @@ export default function MessageForm({receiverId}:Props){
                         </button>
                         <p className="text-sm text-gray-500">キャンバスを追加する</p>                    
                     </div>
+                    <div>
+                    <p className={`text-sm ${isOverLimit ? "text-red-500" : "text-gray-500"}`}>
+                        {chars}/{MAX_Chars}
+                    </p>
+                </div>
 
-                    <Button type="submit">
+                </div>
+                <div className="flex justify-end">
+                    <Button type="submit" disabled={isOverLimit || chars === 0}>
                         <IoSendSharp />
                         送信
                     </Button>
                 </div>
+
 
             </form>
     )

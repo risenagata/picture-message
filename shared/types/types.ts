@@ -36,3 +36,5 @@ export type NGWord = {
 }
 
 export const MAX_NGWords=100
+
+export const MAX_Chars=1000

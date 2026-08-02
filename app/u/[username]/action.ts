@@ -1,5 +1,6 @@
 'use server'
 import { prisma } from "@/lib/prisma"
+import { MAX_Chars } from "@/shared/types/types"
 import { createClient } from "@/utils/supabase/server"
 
 
@@ -18,6 +19,14 @@ export default async function createMessage(_:MessageState,formData:FormData):Pr
         return{
             success:false,
             message:"メッセージを入力してください"
+        }
+    }
+
+    // 文字数制限の確認
+    if(thanksMessage.length > MAX_Chars){
+        return{
+            success:false,
+            message:`${MAX_Chars}文字以内で入力してください`
         }
     }
 
