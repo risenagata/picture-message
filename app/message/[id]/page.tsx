@@ -2,6 +2,8 @@
 
 import { prisma } from "@/lib/prisma";
 import MessageCard from "./MessageCard";
+import { createClient } from "@/utils/supabase/server";
+import { notFound, redirect } from "next/navigation";
 
 
 
@@ -11,6 +13,11 @@ export default async function MessageDetail({
   params:Promise<{id:string}>
 }) {
 
+  const supabase=await createClient()
+  const {data:{user}}=await supabase.auth.getUser()
+  if(!user){
+    redirect("/auth/signin")
+  }
 
   const {id}=await params
 
@@ -19,6 +26,9 @@ export default async function MessageDetail({
       id
     }
   })
+  if(!message || message.receiverId === user.id){
+    notFound()
+  }
 
   await prisma.message.update({
     where:{
