@@ -13,20 +13,22 @@ export default async function MessageDetail({
   params:Promise<{id:string}>
 }) {
 
+  const {id}=await params
+
   const supabase=await createClient()
   const {data:{user}}=await supabase.auth.getUser()
   if(!user){
     redirect("/auth/signin")
   }
 
-  const {id}=await params
+  
 
   const message=await prisma.message.findUnique({
     where:{
       id
     }
   })
-  if(!message || message.receiverId === user.id){
+  if(!message || message.receiverId !== user.id){
     notFound()
   }
 
@@ -40,15 +42,6 @@ export default async function MessageDetail({
   })
 
 
-
-  if(!message){
-    return(
-      <div className="m-5 flex justify-center items-center">
-        <p className="text-gray-500">メッセージが見当たりません</p>
-
-      </div>
-    )
-  }
 
   return (
     <div className="m-5 flex flex-col items-center gap-4">

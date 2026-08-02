@@ -61,10 +61,10 @@ export default async function Mypage(){
                     <Label>メールアドレス</Label>
                     <p>{profile.email}</p>
                 </div>
-                <div className="mt-4">
+                {/* <div className="mt-4">
                     <Label>アカウント</Label>
                     <p>{profile.xAccount}</p>
-                </div>
+                </div> */}
                 <div className="my-4">
                     <Label>マイURL</Label>
 

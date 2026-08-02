@@ -1,10 +1,10 @@
 'use client'
 
-import Button from "@/shared/components/Button"
+// import Button from "@/shared/components/Button"
 import Card from "@/shared/components/Card"
 import ImageDownLoadButton from "@/shared/components/ImageDownloadButton";
 import { useRef } from "react";
-import { FaXTwitter } from "react-icons/fa6";
+// import { FaXTwitter } from "react-icons/fa6";
 
 type Props={
     message:{
@@ -29,13 +29,13 @@ export default function MessageCard({message}:Props){
 
             <ImageDownLoadButton targetRef={cardRef}/>
 
-            <div className="flex flex-col pt-8 items-center">
+            {/* <div className="flex flex-col pt-8 items-center">
                 <p className="text-xs text-gray-500">このメッセージをXで返信できます</p>
                 <Button color="black">
                     <FaXTwitter/>
                     で返信する
                 </Button>
-            </div>
+            </div> */}
  
         </div>
     )
