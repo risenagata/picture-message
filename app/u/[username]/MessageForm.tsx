@@ -8,6 +8,7 @@ import { startTransition, useActionState, useEffect, useState } from "react"
 import { toast } from "sonner"
 import { createClient } from "@/utils/supabase/client"
 import { MAX_Chars } from "@/shared/types/types"
+import Canvas from "@/shared/components/Canvas"
 
 type Props={
     receiverId:string
@@ -85,6 +86,7 @@ export default function MessageForm({receiverId}:Props){
                     </Button>
                 </div>
 
+                <Canvas />
 
             </form>
     )

@@ -1,4 +1,5 @@
 'use server'
+import { sendNewMessageMail } from "@/lib/mail"
 import { prisma } from "@/lib/prisma"
 import { MAX_Chars } from "@/shared/types/types"
 import { createClient } from "@/utils/supabase/server"
@@ -77,6 +78,10 @@ export default async function createMessage(_:MessageState,formData:FormData):Pr
             content:thanksMessage
         }
     })
+
+    // メール通知機能
+    sendNewMessageMail(receiver.email,receiver.displayName)
+
 
     return{
         success:true,
