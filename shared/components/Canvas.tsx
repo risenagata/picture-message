@@ -28,7 +28,7 @@ export default function Canvas(){
     const handleMouseDown=(e:any)=>{
         isDrawing.current=true
         const point=e.target.getStage().getPointerPosition()
-        setLines([...lines, { tool, points: [point.x, point.y],color:"#343333",strokeWidth }])
+        setLines(prev=>[...prev, { tool, points: [point.x, point.y],color:"#343333",strokeWidth }])
     }
 
     // 動かすと描画できる
@@ -81,6 +81,43 @@ export default function Canvas(){
         setLines([])
     }
 
+    // スマホ・ipad用の描画
+    const handleTouchStart=(e:any)=>{
+        e.evt.preventDefault()
+        isDrawing.current=true
+        const point=e.target.getStage().getPointerPosition()
+        setLines(prev=>[...prev, { tool, points: [point.x, point.y],color:"#343333",strokeWidth }])
+
+    }
+
+    const handleTouchMove=(e:any)=>{
+        e.evt.preventDefault()
+        if(!isDrawing.current){
+            return
+        }
+        const point=e.target.getStage().getPointerPosition()
+        setLines(prev => {
+        const lastLine = prev[prev.length - 1]
+        if (!lastLine) {
+            return prev
+        }
+        const updatedLine = {
+            ...lastLine,
+            points: lastLine.points.concat([point.x, point.y]),
+        }
+        return [
+            ...prev.slice(0, -1),
+            updatedLine,
+        ]
+        })
+
+    }
+
+    const handleTouchEnd=(e:any)=>{
+        e.evt.preventDefault()
+        isDrawing.current=false
+    }
+
     useEffect(()=>{
         if(!containerRef.current)return
 
@@ -96,13 +133,16 @@ export default function Canvas(){
 
     return(
     <div>
-        <div ref={containerRef} className="w-full max-w-[760px] bg-white border border-gray-500 ">
+        <div ref={containerRef} className="w-full max-w-[760px] bg-white border border-gray-500 touch-none">
             <Stage
             width={stageWidth}
             height={stageWidth}
             onMouseDown={handleMouseDown} 
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
             >
                 <Layer>
                     {lines.map((line,i)=>(
