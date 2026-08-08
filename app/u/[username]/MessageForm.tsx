@@ -86,8 +86,9 @@ export default function MessageForm({receiverId}:Props){
                     </Button>
                 </div>
 
-                <Canvas />
+                <Canvas />                
 
             </form>
+
     )
 }
