@@ -16,6 +16,7 @@ type Props={
 
 export default function MessageForm({receiverId}:Props){
     const [chars,setChars]=useState(0)
+    const [canvasOpen,setCanvasOpen]=useState<boolean>(false)
     const [state,formAction]=useActionState(createMessage,{success:false,message:""})
 
     const handleChange=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
@@ -40,6 +41,10 @@ export default function MessageForm({receiverId}:Props){
         
     }
 
+    const handleCanvasOpen=()=>{
+        setCanvasOpen(!canvasOpen)
+    }
+
    useEffect(()=>{
     if(!state.message)return
     if(state.success){
@@ -54,6 +59,19 @@ export default function MessageForm({receiverId}:Props){
             className="w-full max-w-2xl flex flex-col gap-4 pt-4"
             action={handleAction}
             >
+                <div className="flex justify-between items-end">
+                    <div>
+                        <p className={`text-sm ${isOverLimit ? "text-red-500" : "text-gray-500"}`}>
+                            {chars}/{MAX_Chars}
+                        </p>
+                    </div>
+                    <div>
+                        <Button type="submit" disabled={isOverLimit || chars === 0}>
+                            <IoSendSharp />
+                            送信
+                        </Button>
+                    </div>
+                </div>
                 <input type="hidden" name="receiverId" value={receiverId} />
                 <Textarea 
                 placeholder="これからも応援しています！"
@@ -62,31 +80,20 @@ export default function MessageForm({receiverId}:Props){
                 onChange={handleChange}
                 />
 
-                
+                {canvasOpen && <Canvas /> }
+
                 <div className="w-full max-w-2xl flex justify-between items-center gap-2">
                     <div className="flex items-center gap-2">
                         <button
                         type="button" 
-                        className="bg-white text-gray-500 rounded-full w-8 h-8 hover:bg-gray-300">
-                            +
+                        className="bg-white text-gray-500 rounded-full shadow w-8 h-8 hover:bg-gray-300"
+                        onClick={handleCanvasOpen}
+                        >
+                            {canvasOpen ? "ー" : "+" }
                         </button>
-                        <p className="text-sm text-gray-500">キャンバスを追加する</p>                    
+                        <p className="text-sm text-gray-500">{canvasOpen ? "キャンバスを削除する" :"キャンバスを追加する"}</p>                    
                     </div>
-                    <div>
-                    <p className={`text-sm ${isOverLimit ? "text-red-500" : "text-gray-500"}`}>
-                        {chars}/{MAX_Chars}
-                    </p>
                 </div>
-
-                </div>
-                <div className="flex justify-end">
-                    <Button type="submit" disabled={isOverLimit || chars === 0}>
-                        <IoSendSharp />
-                        送信
-                    </Button>
-                </div>
-
-                <Canvas />                
 
             </form>
 
