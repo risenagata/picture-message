@@ -4,11 +4,11 @@ import Textarea from "@/shared/components/Textarea"
 import createMessage from "./action"
 import Button from "@/shared/components/Button"
 import { IoSendSharp } from "react-icons/io5"
-import { startTransition, useActionState, useEffect, useState } from "react"
+import { startTransition, useActionState, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import { createClient } from "@/utils/supabase/client"
 import { MAX_Chars } from "@/shared/types/types"
-import Canvas from "@/shared/components/Canvas"
+import Canvas, { CanvasRef } from "@/shared/components/Canvas"
 
 type Props={
     receiverId:string
@@ -17,7 +17,9 @@ type Props={
 export default function MessageForm({receiverId}:Props){
     const [chars,setChars]=useState(0)
     const [canvasOpen,setCanvasOpen]=useState<boolean>(false)
+    const [hasDrawing,setHasDrawing]=useState(false)
     const [state,formAction]=useActionState(createMessage,{success:false,message:""})
+    const canvasRef = useRef<CanvasRef>(null)
 
     const handleChange=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
         setChars(e.target.value.length)
@@ -26,6 +28,16 @@ export default function MessageForm({receiverId}:Props){
 
 
     const handleAction=async(formData:FormData)=>{
+        // Canvasに描画がある時、画像を取得
+        if(canvasRef.current?.hasDrawing()){
+            const blob=await canvasRef.current.getBlob()
+            if(blob){
+                    formData.append("image",blob,"drawing.png")
+            }
+        }
+        
+
+        // 匿名処理
         const supabase = createClient()
         const {data:{user}}=await supabase.auth.getUser()
         if(!user){
@@ -38,10 +50,13 @@ export default function MessageForm({receiverId}:Props){
         startTransition(()=>{
             formAction(formData)
         })
-        
+        console.log(formData.get("image"))
     }
 
     const handleCanvasOpen=()=>{
+        if(canvasOpen){
+            setHasDrawing(false)
+        }
         setCanvasOpen(!canvasOpen)
     }
 
@@ -66,7 +81,7 @@ export default function MessageForm({receiverId}:Props){
                         </p>
                     </div>
                     <div>
-                        <Button type="submit" disabled={isOverLimit || chars === 0}>
+                        <Button type="submit" disabled={isOverLimit || (chars === 0 && !hasDrawing)}>
                             <IoSendSharp />
                             送信
                         </Button>
@@ -80,7 +95,7 @@ export default function MessageForm({receiverId}:Props){
                 onChange={handleChange}
                 />
 
-                {canvasOpen && <Canvas /> }
+                {canvasOpen && <Canvas ref={canvasRef} onDrawingChange={setHasDrawing} /> }
 
                 <div className="w-full max-w-2xl flex justify-between items-center gap-2">
                     <div className="flex items-center gap-2">
@@ -94,7 +109,6 @@ export default function MessageForm({receiverId}:Props){
                         <p className="text-sm text-gray-500">{canvasOpen ? "キャンバスを削除する" :"キャンバスを追加する"}</p>                    
                     </div>
                 </div>
-
             </form>
 
     )

@@ -45,24 +45,7 @@ export default function SettingEmailForm({email}:Props){
         toast.success("確認メールを送信しました。メールをご確認ください。")
     }
 
-    // const settingEmail=async(data:EmailFormValues)=>{
-    //     const formData = new FormData();
-    //     formData.append("email",data.email)
 
-    //     const result=await updateEmail(
-    //         {
-    //             success:false,
-    //             message:""
-    //         },
-    //         formData
-    //     )
-    //     if(result.success){
-    //         toast.success(result.message)
-    //         router.push("/setting")
-    //         return
-    //     }
-    //     toast.error(result.message)
-    // }
 
     return(
             <form onSubmit={handleSubmit(SettingEmail)} className="w-full max-w-md">

@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react"
+import type Konva from "konva";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { BsEraser } from "react-icons/bs"
 import { FaPen } from "react-icons/fa6"
 import { LuUndo2 } from "react-icons/lu";
@@ -14,7 +15,16 @@ type DrawingLine = {
     strokeWidth: number
 }
 
-export default function Canvas(){
+type CanvasProps={
+    onDrawingChange: (hasDrawing: boolean) => void
+}
+
+export type CanvasRef={
+    getBlob:()=>Promise<Blob | null>
+    hasDrawing:()=>boolean
+}
+
+const Canvas= forwardRef<CanvasRef,CanvasProps>(function Canvas({onDrawingChange},ref){
 
     const [lines,setLines]=useState<DrawingLine[]>([])
     const [tool,setTool]=useState<"pen" | "eraser">('pen')
@@ -24,11 +34,14 @@ export default function Canvas(){
     const containerRef = useRef<HTMLDivElement>(null)
     const [stageWidth, setStageWidth] = useState(500)
 
+    const stageRef = useRef<Konva.Stage>(null)
+
     // クリックしながら書ける
     const handleMouseDown=(e:any)=>{
         isDrawing.current=true
         const point=e.target.getStage().getPointerPosition()
         setLines(prev=>[...prev, { tool, points: [point.x, point.y],color:"#343333",strokeWidth }])
+        onDrawingChange(true)
     }
 
     // 動かすと描画できる
@@ -60,7 +73,7 @@ export default function Canvas(){
 
     // 太さ
     const strokeOptions = [
-        { width: 1, iconSize: 6 },
+        { width: 0.5, iconSize: 6 },
         { width: 2, iconSize: 9 },
         { width: 3, iconSize: 12 },
         { width: 5, iconSize: 16 },
@@ -79,6 +92,7 @@ export default function Canvas(){
     // 全消し
     const handleClear=()=>{
         setLines([])
+        onDrawingChange(false)
     }
 
     // スマホ・ipad用の描画
@@ -87,7 +101,7 @@ export default function Canvas(){
         isDrawing.current=true
         const point=e.target.getStage().getPointerPosition()
         setLines(prev=>[...prev, { tool, points: [point.x, point.y],color:"#343333",strokeWidth }])
-
+        onDrawingChange(true)
     }
 
     const handleTouchMove=(e:any)=>{
@@ -118,6 +132,24 @@ export default function Canvas(){
         isDrawing.current=false
     }
 
+    useImperativeHandle(ref,()=>({
+        async getBlob(){
+            const stage=stageRef.current
+            if(!stage){return null}
+
+            const dataURL =stage.toDataURL() //画像を表す文字列に変換
+
+            const response =await fetch(dataURL) //dataURLをデータとして取得
+            const blob=await response.blob() //取得データをblob（ブラウザで扱えるファイルの中身）に変換
+            return blob
+
+        },
+        hasDrawing:()=>{
+            return lines.length > 0
+        } //描画されているかどうか
+
+    }))
+
     useEffect(()=>{
         if(!containerRef.current)return
 
@@ -133,8 +165,14 @@ export default function Canvas(){
 
     return(
     <div>
-        <div ref={containerRef} className="w-full max-w-[760px] bg-white border border-gray-500 touch-none">
+        <div ref={containerRef} className="relative w-full max-w-[760px] bg-white border border-gray-500 touch-none">
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <span className="text-5xl font-bold text-gray-200/70">
+                    PictoMessa
+                </span>
+            </div>
             <Stage
+            ref={stageRef}
             width={stageWidth}
             height={stageWidth}
             onMouseDown={handleMouseDown} 
@@ -161,7 +199,6 @@ export default function Canvas(){
                     ))}
                 </Layer>
             </Stage>
-
 
         </div>
 
@@ -232,4 +269,6 @@ export default function Canvas(){
             
     </div>
     )
-}
+})
+
+export default Canvas
