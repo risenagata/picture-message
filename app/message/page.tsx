@@ -8,6 +8,7 @@ import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { AiFillPicture } from "react-icons/ai";
 
 
 
@@ -55,10 +56,21 @@ export default async function MessageBox(){
                                 })}
                                 
                             </p>
-                            {message.content && 
-                            (<p className="line-clamp-1">
-                            {message.content}
-                            </p>)}
+                            <p className="line-clamp-1">
+                                {message.content}
+                            </p>
+
+                            {message.imageUrl && (
+                                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                                    <AiFillPicture />
+                                    <p>
+                                        イラストメッセージが届いています
+                                    </p>
+                                </div>
+                                
+                                
+                                
+                            )}
 
 
                         </Card>

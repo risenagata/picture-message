@@ -32,6 +32,21 @@ export default async function MessageDetail({
     notFound()
   }
 
+  // イラストの取得（supabase.storageから画像を持ってくる）
+  let imageUrl:string | null=null
+  if(message.imageUrl){
+    const {data,error}=await supabase.storage
+    .from("message-images")
+    .createSignedUrl(message.imageUrl,60*60) //60*60は有効時間1時間という意味
+
+
+    if(error){
+      console.error("画像取得エラー：",error)
+    }else{
+      imageUrl=data.signedUrl  //data.signedUrlはDBに保存したstorage内のパス
+    }
+  }
+
   await prisma.message.update({
     where:{
       id
@@ -46,7 +61,7 @@ export default async function MessageDetail({
   return (
     <div className="m-5 flex flex-col items-center gap-4">
 
-      <MessageCard message={message} />
+      <MessageCard message={message} imageUrl={imageUrl} />
 
     </div>
     

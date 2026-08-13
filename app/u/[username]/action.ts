@@ -14,12 +14,16 @@ export default async function createMessage(_:MessageState,formData:FormData):Pr
 
     // メッセージ中身確認
     const receiverId=formData.get('receiverId') as string
-
+    const image=formData.get('image')
     const thanksMessage=(formData.get('message') as string).trim()
-    if(!thanksMessage){
+
+    const hasImage=image instanceof File && image.size > 0
+    const hasMessage=thanksMessage.length > 0
+    
+    if(!hasMessage && !hasImage){
         return{
             success:false,
-            message:"メッセージを入力してください"
+            message:"メッセージまたはイラストを入力してください"
         }
     }
 
@@ -70,12 +74,37 @@ export default async function createMessage(_:MessageState,formData:FormData):Pr
         }
     }
 
+    // 画像ファイルのアップロード
+    let imagePath:string | null=null
+
+    if(image instanceof File && image.size > 0){
+        const fileName=`${crypto.randomUUID()}.png`
+        const filePath=`${receiverId}/${fileName}`
+
+        const{data,error}=await supabase.storage
+        .from("message-images")
+        .upload(filePath,image,{
+            contentType:image.type,
+            upsert:false
+        })
+        if(error){
+            console.error("画像アップロードエラー：",error)
+            return{
+                success:false,
+                message:"イラストの保存に失敗しました"
+            }
+        }
+        imagePath=data.path
+        console.log("画像アップロード成功：",data.path)
+    }
+
     // メッセージ送信
     await prisma.message.create({
         data:{
             receiverId,
             senderGuestId:user.id,
-            content:thanksMessage
+            content:thanksMessage,
+            imageUrl:imagePath
         }
     })
 

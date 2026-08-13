@@ -50,7 +50,7 @@ export default function MessageForm({receiverId}:Props){
         startTransition(()=>{
             formAction(formData)
         })
-        console.log(formData.get("image"))
+        
     }
 
     const handleCanvasOpen=()=>{
