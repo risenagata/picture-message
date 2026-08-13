@@ -13,13 +13,18 @@ import { AiFillPicture } from "react-icons/ai";
 
 
 
-export default async function MessageBox(){
+export default async function MessageBox({searchParams}:{searchParams:Promise<{page?:string}>}){
+
+    const {page}=await searchParams
+    const currentPage=Number(page) || 1
 
     const supabase=await createClient()
     const { data: { user } } = await supabase.auth.getUser();
         if(!user){
         redirect("/auth/signin")
     }
+
+    const pageSize=10
 
     const messages=await prisma.message.findMany({
         where:{
@@ -28,8 +33,18 @@ export default async function MessageBox(){
         orderBy:[
             {isRead:"asc"},
             {createdAt:"desc"}
-        ]
+        ],
+        skip: (currentPage - 1) * pageSize,
+        take: pageSize,
     })
+
+    const totalMessages=await prisma.message.count({
+        where:{
+            receiverId:user.id
+        }
+    })
+  
+    const totalPages=Math.ceil(totalMessages / pageSize)
 
    
     return(
@@ -37,6 +52,12 @@ export default async function MessageBox(){
         
         <div className="m-5 flex flex-col items-center">
             <PageTitle>受信箱</PageTitle>
+
+            <div className="w-full max-w-2xl">
+                <p className="text-sm text-gray-500">
+                    全{totalMessages}件中{messages.length}件表示
+                </p>
+            </div>
 
             {!messages.length && 
                 (
@@ -67,9 +88,7 @@ export default async function MessageBox(){
                                         イラストメッセージが届いています
                                     </p>
                                 </div>
-                                
-                                
-                                
+                                                   
                             )}
 
 
@@ -78,6 +97,31 @@ export default async function MessageBox(){
                     </Link>
                 </div>
             ))}
+
+            
+
+            <div className="border border-yellow-500 rounded-md px-2 py-1 flex gap-2 justify-center items-center">
+                <Link href={`/message?page=${currentPage - 1}`}>
+                    <button 
+                    type="button" 
+                    disabled={currentPage === 1} 
+                    className="p-1 pr-4 rounded-full text-yellow-500 hover:text-yellow-600 disabled:cursor-not-allowed disabled:text-gray-300 disabled:opacity-50">
+                        ＜ 前へ
+                    </button>                
+                </Link>
+
+                <div className="flex gap-2 items-center text-gray-400">
+                    <p className="text-xl text-bold">{currentPage}</p>
+                    <p className="text-sm">/</p>
+                    <p className="text-xl text-bold">{totalPages}</p>
+                </div>
+
+                <Link href={`/message?page=${currentPage + 1}`}>
+                    <button type="button" disabled={currentPage === totalPages} className="p-1 pl-4 rounded-full text-yellow-500 hover:text-yellow-600 disabled:cursor-not-allowed disabled:text-gray-300 disabled:opacity-50">
+                        次へ ＞
+                    </button>                
+                </Link>
+            </div>
 
 
         </div>
