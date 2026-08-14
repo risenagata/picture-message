@@ -10,11 +10,11 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 
-const emailSchema=z.object({
+export const emailSchema=z.object({
     email:z.email("有効なメールアドレスを入力してください")
      
 })
-type EmailFormValues=z.infer<typeof emailSchema>
+export type EmailFormValues=z.infer<typeof emailSchema>
 
 type Props={
     email:string
