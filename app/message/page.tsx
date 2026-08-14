@@ -100,7 +100,7 @@ export default async function MessageBox({searchParams}:{searchParams:Promise<{p
 
             
 
-            <div className="border border-yellow-500 rounded-md px-2 py-1 flex gap-2 justify-center items-center">
+            <div className="border border-yellow-500 rounded-full px-2 py-1 flex gap-2 justify-center items-center">
                 <Link href={`/message?page=${currentPage - 1}`}>
                     <button 
                     type="button" 

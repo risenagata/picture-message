@@ -1,5 +1,6 @@
 'use server'
 import { sendNewMessageMail } from "@/lib/mail"
+import { moderateMessage } from "@/lib/moderateMessage"
 import { prisma } from "@/lib/prisma"
 import { MAX_Chars } from "@/shared/types/types"
 import { createClient } from "@/utils/supabase/server"
@@ -47,6 +48,15 @@ export default async function createMessage(_:MessageState,formData:FormData):Pr
         return{
             success:false,
             message:"NGワードが含まれているため送信できませんでした"
+        }
+    }
+
+    // Geminiでの不適切投稿チェック
+    const moderation=await moderateMessage(thanksMessage)
+    if(!moderation.ok){
+        return{
+            success:false,
+            message:moderation.reason ?? "不適切な内容のため送信できませんでした"
         }
     }
 
