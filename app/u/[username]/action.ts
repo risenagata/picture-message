@@ -52,13 +52,17 @@ export default async function createMessage(_:MessageState,formData:FormData):Pr
     }
 
     // Geminiでの不適切投稿チェック
-    const moderation=await moderateMessage(thanksMessage)
-    if(!moderation.ok){
-        return{
-            success:false,
-            message:moderation.reason ?? "不適切な内容のため送信できませんでした"
+    
+    if(hasMessage){
+        const moderation=await moderateMessage(thanksMessage)
+        if(!moderation.ok){
+            return{
+                success:false,
+                message:moderation.reason ?? "不適切な内容のため送信できませんでした"
+            }
         }
     }
+
 
 
     // 送信先ユーザーの取得
