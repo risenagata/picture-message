@@ -7,7 +7,7 @@ type CardProps = {
 
 export default function Card({ children,className}: CardProps) {
   return (
-    <div className={twMerge("rounded-lg border-4 border-yellow-500 bg-white p-6 shadow",className)}>
+    <div className={twMerge("rounded-lg border-4 border-yellow-500 bg-white py-3 px-6 shadow",className)}>
       {children}
     </div>
   );
