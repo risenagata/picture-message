@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import MessageCard from "./MessageCard";
 import { createClient } from "@/utils/supabase/server";
 import { notFound, redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 
 
@@ -47,6 +48,45 @@ export default async function MessageDetail({
     }
   }
 
+  // メッセージ削除処理
+  const deleteMessage=async()=>{
+    'use server'
+    const supabase =await createClient()
+    const {data:{user}}=await supabase.auth.getUser()
+    if(!user){
+      redirect("/auth/signin")
+    }
+
+    const message=await prisma.message.findUnique({
+      where:{
+        id
+      }
+    })
+    if(!message || message.receiverId !== user.id){
+    notFound()
+    }
+    
+    // メッセージにイラストがある場合　ストレージの画像も削除
+    if(message.imageUrl){
+      const {error}=await supabase.storage
+      .from("message-images")
+      .remove([message.imageUrl])
+      if(error){
+        console.error("画像削除エラー：",error)
+      }
+    }
+
+    await prisma.message.delete({
+      where:{
+        id
+      }
+    })
+    revalidatePath("/message")
+    redirect("/message")
+  }
+
+
+
   await prisma.message.update({
     where:{
       id
@@ -61,7 +101,7 @@ export default async function MessageDetail({
   return (
     <div className="m-5 flex flex-col items-center gap-4">
 
-      <MessageCard message={message} imageUrl={imageUrl} />
+      <MessageCard message={message} imageUrl={imageUrl} deleteMessage={deleteMessage} />
 
     </div>
     

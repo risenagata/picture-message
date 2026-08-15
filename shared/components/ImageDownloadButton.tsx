@@ -29,7 +29,7 @@
         return(
             <Button color="others" onClick={download}>
                 <IoCloudDownloadOutline />
-                画像としてダウンロードする
+                画像ダウンロード
             </Button>
         )
     }

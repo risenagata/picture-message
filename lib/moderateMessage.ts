@@ -44,7 +44,7 @@ ${content}
 `.trim()
 
   const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash", // 速くて安め。学習・デモ向け
+    model: "gemini-3.6-flash", 
     contents: prompt,
   })
 
