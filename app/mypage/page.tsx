@@ -69,7 +69,7 @@ export default async function Mypage(){
                     <Label>マイURL</Label>
 
                         <div className="flex items-center gap-4">
-                            <p className="border-b-1 text-blue-500">http://pictmessa.com/u/{profile.username}</p>
+                            <p className="border-b-1 text-blue-500">http://picture-message-gamma.vercel.app/u/{profile.username}</p>
 
                             <Copy username={profile.username} />
 
