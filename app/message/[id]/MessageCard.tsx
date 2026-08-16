@@ -1,7 +1,6 @@
 'use client'
 
 import Button from "@/shared/components/Button";
-// import Button from "@/shared/components/Button"
 import Card from "@/shared/components/Card"
 import ImageDownLoadButton from "@/shared/components/ImageDownloadButton";
 import Link from "next/link";
