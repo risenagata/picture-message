@@ -48,8 +48,6 @@ export default async function MessageBox({searchParams}:{searchParams:Promise<{p
 
    
     return(
-
-        
         <div className="m-5 flex flex-col items-center">
             <PageTitle>受信箱</PageTitle>
 
@@ -90,8 +88,6 @@ export default async function MessageBox({searchParams}:{searchParams:Promise<{p
                                 </div>
                                                    
                             )}
-
-
                         </Card>
                         
                     </Link>
@@ -99,7 +95,7 @@ export default async function MessageBox({searchParams}:{searchParams:Promise<{p
             ))}
 
             
-            {messages && (
+            {messages.length > 0  && (
                 <div className="border border-yellow-500 rounded-full px-2 py-1 flex gap-2 justify-center items-center">
                 <Link href={`/message?page=${currentPage - 1}`}>
                     <button 
@@ -124,8 +120,6 @@ export default async function MessageBox({searchParams}:{searchParams:Promise<{p
             </div>
             )}
             
-
-
         </div>
     )
 }
