@@ -8,8 +8,7 @@ type Props={
 export default function MessageNotificationEmail({displayName="テストユーザー"}:Props){
 
 const appUrl =
-    process.env.NEXT_PUBLIC_APP_URL ??
-    "http://localhost:3000";
+    process.env.NEXT_PUBLIC_APP_URL
     return(
         <Html>
             <Tailwind>

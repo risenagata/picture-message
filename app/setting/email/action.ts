@@ -25,7 +25,7 @@ export default async function updateEmail(_:EmailState,formData:FormData){
     const { error } = await supabase.auth.updateUser(
         {email},
         {
-            emailRedirectTo:"http://localhost:3000/auth/callback?next=/setting"
+            emailRedirectTo:"https://picture-message-gamma.vercel.app/auth/callback?next=/setting"
         }
     );
 
