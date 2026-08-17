@@ -23,8 +23,8 @@ export default function Copy({username}:CopyProps){
     
     return(
         <>
-        <button onClick={clickHandler}>
-            <div className="text-gray-500 text-lg p-2">
+        <button onClick={clickHandler} className="active:scale-90">
+            <div className="text-gray-500 text-lg p-2 bg-gray-100 border border-gray-300 rounded-md">
                 <FaRegCopy />
             </div>
             
