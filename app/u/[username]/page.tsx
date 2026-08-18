@@ -34,6 +34,10 @@ export default async function MessageCreate({params}:{params:Promise<{username:s
                 />
             </div>
 
+            <p className="text-gray-500 text-xs mt-4">
+                メッセージのみ・イラストのみ・メッセージ＋イラストのいずれかで送信ができます
+            </p>
+
             <MessageForm receiverId={receiver.id} />
             
             
