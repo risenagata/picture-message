@@ -4,7 +4,7 @@ import Textarea from "@/shared/components/Textarea"
 import createMessage from "./action"
 import Button from "@/shared/components/Button"
 import { IoSendSharp } from "react-icons/io5"
-import { startTransition, useActionState, useEffect, useRef, useState } from "react"
+import { startTransition,useActionState, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import { createClient } from "@/utils/supabase/client"
 import { MAX_Chars } from "@/shared/types/types"
@@ -18,7 +18,7 @@ export default function MessageForm({receiverId}:Props){
     const [chars,setChars]=useState(0)
     const [canvasOpen,setCanvasOpen]=useState<boolean>(false)
     const [hasDrawing,setHasDrawing]=useState(false)
-    const [state,formAction]=useActionState(createMessage,{success:false,message:""})
+    const [state,formAction,isPending]=useActionState(createMessage,{success:false,message:""})
     const canvasRef = useRef<CanvasRef>(null)
 
     const handleChange=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
@@ -81,9 +81,9 @@ export default function MessageForm({receiverId}:Props){
                         </p>
                     </div>
                     <div>
-                        <Button type="submit" disabled={isOverLimit || (chars === 0 && !hasDrawing)}>
+                        <Button type="submit" disabled={ isPending || isOverLimit || (chars === 0 && !hasDrawing)}>
                             <IoSendSharp />
-                            送信
+                            {isPending? "送信中...":"送信"}
                         </Button>
                     </div>
                 </div>
