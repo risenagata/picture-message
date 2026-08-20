@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai"
+import { GoogleGenAI, type ThinkingLevel } from "@google/genai"
 
 export type ModerateResult = {
   ok: boolean
@@ -43,14 +43,19 @@ ${content}
 """
 `.trim()
 
-  const response = await ai.models.generateContent({
-    model: "gemini-3.6-flash", 
-    contents: prompt,
-  })
+  try{
+    const response = await ai.models.generateContent({
+      model: "gemini-3.6-flash", 
+      contents: prompt,
+      config: {
+      thinkingConfig: {thinkingLevel: "minimal" as ThinkingLevel},
+        maxOutputTokens:100,
+        responseMimeType:"application/json",
+        httpOptions:{timeout:10_000}
+      }
+    })
+    const text = response.text?.trim() ?? ""
 
-  const text = response.text?.trim() ?? ""
-
-  try {
     // 念のため ```json ... ``` が混ざっても剥がす
     const cleaned = text
       .replace(/^```(?:json)?\s*/i, "")
@@ -67,12 +72,12 @@ ${content}
       ok: false,
       reason: parsed.reason || "不適切な内容と判断されたため送信できませんでした",
     }
-  } catch {
-    console.error("Gemini の応答を JSON として読めませんでした:", text)
-    // API 応答が変でもアプリ全体を落とさない
+
+  }catch(error){
+    console.error("Gemini APIエラー:", error)
     return {
       ok: false,
-      reason: "投稿チェックに失敗しました。時間をおいて再度お試しください",
+      reason: "投稿チェックに時間がかかっています。もう一度お試しください",
     }
   }
 }
