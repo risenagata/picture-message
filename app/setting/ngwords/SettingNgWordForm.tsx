@@ -22,7 +22,7 @@ export default function SettingNgWordForm({ngWords}:Props){
 
     const canAdd=ngWords.length < MAX_NGWords
 
-    const [state,formAction]=useActionState(addNGWord,{success:false,message:""})
+    const [state,formAction,isPending]=useActionState(addNGWord,{success:false,message:""})
 
     useEffect(()=>{
         if(!state.message)return
@@ -41,7 +41,7 @@ export default function SettingNgWordForm({ngWords}:Props){
                 className="flex-1"
                 name="word"
                 />
-                <Button type="submit">保存</Button>
+                <Button type="submit" disabled={isPending}>{isPending ? "保存中...":"保存"}</Button>
                 
                         
             </form>
