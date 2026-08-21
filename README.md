@@ -52,10 +52,47 @@
 ---
 ## アーキテクチャ図
 
+![アーキテクチャ図](public/archetecture2.png)
+
 
 ---
 ## ER図
+```mermaid
+erDiagram
+user {
+  uuid id PK   
+  text email 
+  text username
+  text displayName
+  text avatarUrl
+  timestamp created_at
+  timestamp updated_at
+}
 
+message{
+    uuid id PK
+    uuid user_id(receiverId) FK
+    uuid senderGuestId
+    text content
+    text imageUrl
+    boolean isRead
+    timestamp created_at
+    timestamp updated_at
+}
+
+NGWord{
+    uuid id PK
+    uuid user_id FK
+    text word
+    timestamp created_at
+    timestamp updated_at
+}
+
+user || -- || message:"user_id(receiverId)"
+user || --o{  NGWord:"user_id"
+
+
+```
 
 
 ---
@@ -79,6 +116,28 @@
 
 ---
 ## ローカル開発
+```bash
+git clone https://github.com/risenagata/picture-message.git
+cd picture-message
+npm install
+
+```
+`.env`を作成して以下の環境変数を設定してください
+```bash
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+RESEND_API_KEY=
+GEMINI_API_KEY=
+NEXT_PUBLIC_APP_URL=
+
+DATABASE_URL=
+DIRECT_URL=
+```
+```bash
+npx prisma generate
+npm run dev
+```
+http://localhost:3000でアクセス
 
 
 
