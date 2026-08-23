@@ -37,23 +37,30 @@ const Canvas= forwardRef<CanvasRef,CanvasProps>(function Canvas({onDrawingChange
     const stageRef = useRef<Konva.Stage>(null)
 
     // クリックしながら書ける
-    const handleMouseDown=(e:any)=>{
+    const handleMouseDown=(e:Konva.KonvaEventObject<MouseEvent>)=>{
         isDrawing.current=true
-        const point=e.target.getStage().getPointerPosition()
+        const stage=e.target.getStage()
+        const point=stage?.getPointerPosition()
+        if(!point)return
         setLines(prev=>[...prev, { tool, points: [point.x, point.y],color:"#343333",strokeWidth }])
         onDrawingChange(true)
     }
 
     // 動かすと描画できる
-    const handleMouseMove=(e:any)=>{
+    const handleMouseMove=(e:Konva.KonvaEventObject<MouseEvent>)=>{
         if(!isDrawing.current){
             return
         }
-        const point=e.target.getStage().getPointerPosition()
+        const stage=e.target.getStage()
+        const point=stage?.getPointerPosition()
         setLines(prev => {
         const lastLine = prev[prev.length - 1]
 
         if (!lastLine) {
+            return prev
+        }
+
+        if(!point){
             return prev
         }
 
@@ -96,23 +103,29 @@ const Canvas= forwardRef<CanvasRef,CanvasProps>(function Canvas({onDrawingChange
     }
 
     // スマホ・ipad用の描画
-    const handleTouchStart=(e:any)=>{
+    const handleTouchStart=(e:Konva.KonvaEventObject<TouchEvent>)=>{
         e.evt.preventDefault()
         isDrawing.current=true
-        const point=e.target.getStage().getPointerPosition()
+        const stage=e.target.getStage()
+        const point=stage?.getPointerPosition()
+        if(!point)return
         setLines(prev=>[...prev, { tool, points: [point.x, point.y],color:"#343333",strokeWidth }])
         onDrawingChange(true)
     }
 
-    const handleTouchMove=(e:any)=>{
+    const handleTouchMove=(e:Konva.KonvaEventObject<TouchEvent>)=>{
         e.evt.preventDefault()
         if(!isDrawing.current){
             return
         }
-        const point=e.target.getStage().getPointerPosition()
+        const stage=e.target.getStage()
+        const point=stage?.getPointerPosition()
         setLines(prev => {
         const lastLine = prev[prev.length - 1]
         if (!lastLine) {
+            return prev
+        }
+        if(!point){
             return prev
         }
         const updatedLine = {
@@ -127,7 +140,7 @@ const Canvas= forwardRef<CanvasRef,CanvasProps>(function Canvas({onDrawingChange
 
     }
 
-    const handleTouchEnd=(e:any)=>{
+    const handleTouchEnd=(e:Konva.KonvaEventObject<TouchEvent>)=>{
         e.evt.preventDefault()
         isDrawing.current=false
     }
