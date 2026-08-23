@@ -36,7 +36,7 @@ export default function SignupForm(){
                 email:data.email,
                 password:data.password,
                 options:{
-                    emailRedirectTo:"https://picture-message-gamma.vercel.app/auth/callback?next=/onboarding"
+                    emailRedirectTo:`${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?next=/onboarding`
                 }
             })
 

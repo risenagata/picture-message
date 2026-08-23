@@ -11,7 +11,7 @@ type CopyProps={
 export default function Copy({username}:CopyProps){
     const clickHandler=async()=>{
         
-        const message=`http://picture-message-gamma.vercel.app/u/${username}`
+        const message=`${process.env.NEXT_PUBLIC_APP_URL}/u/${username}`
         
         try{
             await navigator.clipboard.writeText(message)

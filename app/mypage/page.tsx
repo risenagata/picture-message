@@ -61,16 +61,13 @@ export default async function Mypage(){
                     <Label>メールアドレス</Label>
                     <p>{profile.email}</p>
                 </div>
-                {/* <div className="mt-4">
-                    <Label>アカウント</Label>
-                    <p>{profile.xAccount}</p>
-                </div> */}
+
                 <div className="my-4">
                     <Label>マイURL</Label>
 
                         <div className="flex items-center gap-4">
                             <p className="border-b-1 text-blue-500">
-                                http://picture-message-gamma.vercel.app/u/{profile.username}
+                                {process.env.NEXT_PUBLIC_APP_URL}/u/{profile.username}
                             </p>
 
                             <Copy username={profile.username} />
