@@ -52,7 +52,7 @@
 ---
 ## アーキテクチャ図
 
-![アーキテクチャ図](public/archetecture2.png)
+![アーキテクチャ図](public/architecture2.png)
 
 
 ---
