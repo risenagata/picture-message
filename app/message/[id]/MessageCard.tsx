@@ -58,7 +58,7 @@ export default function MessageCard({message,imageUrl,deleteMessage}:Props){
                         <img src={imageUrl} alt="受信イラスト" className="max-w-full h-auto" />
                     )}
                     <p className="text-center font-bold text-sm mt-6 text-gray-600/50">
-                        PictMessa
+                        PictoMessa
                     </p>
                 </Card>
             </div>

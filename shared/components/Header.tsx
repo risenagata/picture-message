@@ -13,7 +13,7 @@ export default function Header({isLoggedIn}:HeaderProps){
     
         <header className="bg-yellow-500 py-4 px-6">
             <div className="flex items-center justify-between">
-            <h1 className="font-bold text-white">ピクトメッセ</h1>
+            <h1 className="font-bold text-white">PictoMessa</h1>
             {isLoggedIn ? (
                 
                 <div className="flex gap-8">

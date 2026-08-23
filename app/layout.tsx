@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ピクトメッセ",
+  title: "PictoMessa-ピクトメッセ-",
   description: "言葉にできない感想をペンを動かすままに伝えよう",
 };
 
