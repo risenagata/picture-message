@@ -5,7 +5,7 @@ import Card from "@/shared/components/Card"
 import ImageDownLoadButton from "@/shared/components/ImageDownloadButton";
 import Link from "next/link";
 import { useRef, useState } from "react";
-// import { FaXTwitter } from "react-icons/fa6";
+
 
 type Props={
     message:{
