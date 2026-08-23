@@ -15,25 +15,8 @@ export default function Signup(){
             
                 <SignupForm />
             
-
-            {/* <div className="flex items-center w-full max-w-md my-5">
-            <div className="flex-1 border-b border-gray-300" />
-            <span className="mx-4 text-sm text-gray-500">
-                または
-            </span>
-            <div className="flex-1 border-b border-gray-300" />
-            </div>
-
-            <div className="flex flex-col gap-5 items-center">
-                <Button color="others"><FaXTwitter/>X(Twitter)でアカウント作成</Button>
-                <Button color="others"><FcGoogle/>Googleでアカウント作成</Button>
-            </div> */}
-            
     
         </div>
-            
-
-
         
     )
 }

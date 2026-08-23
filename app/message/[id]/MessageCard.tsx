@@ -63,16 +63,6 @@ export default function MessageCard({message,imageUrl,deleteMessage}:Props){
                 </Card>
             </div>
 
-
-
-            {/* <div className="flex flex-col pt-8 items-center">
-                <p className="text-xs text-gray-500">このメッセージをXで返信できます</p>
-                <Button color="black">
-                    <FaXTwitter/>
-                    で返信する
-                </Button>
-            </div> */}
-
         </div>
     )
 }
