@@ -1,6 +1,8 @@
 
 import PageTitle from "@/shared/components/PageTitle";
+import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const settingItems = [
   { title: "名前の変更", href: "/setting/profile" },
@@ -11,7 +13,13 @@ const settingItems = [
   { title: "NGワード設定", href: "/setting/ngwords" },
 ];
 
-export default function Setting(){
+export default async function Setting(){
+    const supabase=await createClient()
+    const {data:{user}}=await supabase.auth.getUser()
+    if(!user){
+            redirect("/auth/signin")
+    }
+    
     return(
         <div className="m-5 flex flex-col items-center">
             <PageTitle>設定</PageTitle>
