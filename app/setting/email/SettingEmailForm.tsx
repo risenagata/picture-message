@@ -34,7 +34,7 @@ export default function SettingEmailForm({email}:Props){
         const {error}=await supabase.auth.updateUser(
         {email:data.email},
         {
-            emailRedirectTo:"https://picture-message-gamma.vercel.app/auth/callback?next=/setting"
+            emailRedirectTo:`${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?next=/setting`
         }
         )
 
