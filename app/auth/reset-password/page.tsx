@@ -1,3 +1,4 @@
+//ログイン時にパスワードを忘れた人用の画面
 import ResetPasswordForm from "./ResetPassword";
 
 

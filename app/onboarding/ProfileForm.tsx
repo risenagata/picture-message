@@ -85,11 +85,6 @@ export default function ProfileForm(){
                     )}
                 </div>
 
-                {/* <div className="my-4">
-                    <Label>プロフィール画像</Label>
-
-                   
-                </div> */}
 
                 <div className="my-4">
                     <Label>ユーザーID</Label>
