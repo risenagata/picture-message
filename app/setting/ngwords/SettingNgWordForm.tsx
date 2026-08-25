@@ -34,14 +34,20 @@ export default function SettingNgWordForm({ngWords}:Props){
     },[state])
 
     return(
-        <div>
-            <form action={formAction} className="w-full max-w-md flex  gap-2 pt-6">
+        <div className="w-full max-w-md">
+            <form action={formAction} className="flex w-full gap-2 pt-6">
                 <Input 
                 type="text" 
-                className="flex-1"
+                className="min-w-0 flex-1"
                 name="word"
                 />
-                <Button type="submit" disabled={isPending}>{isPending ? "保存中...":"保存"}</Button>
+                <Button 
+                type="submit" 
+                disabled={isPending}
+                className="shrink-0 whitespace-nowrap"
+                >
+                    {isPending ? "保存中...":"保存"}
+                </Button>
                 
                         
             </form>
