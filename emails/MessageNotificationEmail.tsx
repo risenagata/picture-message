@@ -29,7 +29,7 @@ const appUrl =
 
                             <Button 
                             href={`${appUrl}/message`}
-                            className="mx-auto block w-[320px] py-2 px-4 my-8 rounded-full bg-yellow-500 text-white"
+                            className="w-full mx-auto block md:w-[320px] py-2 px-4 my-8 rounded-full bg-yellow-500 text-white"
                             >
                                 受信箱を見る
                             </Button>
