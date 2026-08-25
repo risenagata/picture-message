@@ -30,7 +30,13 @@ export default function MessageCard({message,imageUrl,deleteMessage}:Props){
             <div className="flex items-center justify-between gap-4 mt-6">
                 <ImageDownLoadButton targetRef={cardRef}/>
   
-                <Button type="button" color="danger" onClick={()=>setIsDeleteConfirmOpen(true)}>メッセージ削除</Button>
+                <Button 
+                type="button" 
+                color="danger"
+                className="shrink-0 whitespace-nowrap" 
+                onClick={()=>setIsDeleteConfirmOpen(true)}>
+                    メッセージ削除
+                </Button>
 
             </div>
             {isDeleteConfirmOpen && (
@@ -50,13 +56,16 @@ export default function MessageCard({message,imageUrl,deleteMessage}:Props){
             )}
 
             <div ref={cardRef}>
-                <Card className="w-full max-w-2xl border-b-20 bg-white my-4 min-w-[500px] min-h-[100px]">
-                    {message && (
-                        <p className="whitespace-pre-wrap text-center">{message.content}</p>
-                    )}
-                    {imageUrl && (
-                        <img src={imageUrl} alt="受信イラスト" className="max-w-full h-auto" />
-                    )}
+                <Card className="my-4 flex w-full md:max-w-[500px] flex-col border-b-20 bg-white">
+                    <div className="flex flex-1 flex-col items-center justify-center gap-4">
+                        {message && (
+                            <p className="w-[80%] whitespace-pre-wrap text-left mt-6">{message.content}</p>
+                        )}
+                        {imageUrl && (
+                            <img src={imageUrl} alt="受信イラスト" className="max-w-[80%] h-auto" />
+                        )}
+                    </div>
+
                     <p className="text-center font-bold text-sm mt-6 text-gray-600/50">
                         PictoMessa
                     </p>
