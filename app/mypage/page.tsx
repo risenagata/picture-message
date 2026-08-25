@@ -66,7 +66,7 @@ export default async function Mypage(){
                     <Label>マイURL</Label>
 
                         <div className="flex items-center gap-4">
-                            <p className="border-b-1 text-blue-500">
+                            <p className="min-w-0 flex-1 break-all border-b-1 text-blue-500">
                                 {process.env.NEXT_PUBLIC_APP_URL}/u/{profile.username}
                             </p>
 
