@@ -27,7 +27,7 @@
 
 
         return(
-            <Button color="others" onClick={download}>
+            <Button color="others" onClick={download} className="shrink-0 whitespace-nowrap">
                 <IoCloudDownloadOutline />
                 画像ダウンロード
             </Button>

@@ -20,8 +20,11 @@ export default function MessageCard({message,imageUrl,deleteMessage}:Props){
     const cardRef=useRef<HTMLDivElement>(null)
     const [isDeleteConfirmOpen,setIsDeleteConfirmOpen]=useState(false)
 
+    //短文は真ん中表示にする
+    const isShortMessage=(message.content?.length ?? 0)<=15
+
     return(
-        <div className="flex flex-col items-center">
+        <div className="flex w-full min-w-0 max-w-2xl flex-col items-center">
             <Link href="/message" className="self-start">
                 <div className="flex items-center text-gray-500 p-2 hover:text-gray-700">
                     <p>＜ 受信箱へ戻る</p>
@@ -55,11 +58,16 @@ export default function MessageCard({message,imageUrl,deleteMessage}:Props){
                 
             )}
 
-            <div ref={cardRef}>
-                <Card className="my-4 flex w-full md:max-w-[500px] flex-col border-b-20 bg-white">
+            <div ref={cardRef} className="w-full min-w-0">
+                <Card className="my-4 min-h-[100px] w-full min-w-0 border-b-20 bg-white">
                     <div className="flex flex-1 flex-col items-center justify-center gap-4">
                         {message && (
-                            <p className="w-[80%] whitespace-pre-wrap text-left mt-6">{message.content}</p>
+                            <p 
+                            className={`w-[80%] whitespace-pre-wrap mt-6 ${
+                                isShortMessage ?"text-center":"text-left"
+                            }`}>
+                                {message.content}
+                            </p>
                         )}
                         {imageUrl && (
                             <img src={imageUrl} alt="受信イラスト" className="max-w-[80%] h-auto" />

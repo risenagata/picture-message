@@ -99,7 +99,7 @@ export default async function MessageDetail({
 
 
   return (
-    <div className="m-5 flex flex-col items-center gap-4">
+    <div className="flex w-full flex-col items-center gap-4 py-5">
 
       <MessageCard message={message} imageUrl={imageUrl} deleteMessage={deleteMessage} />
 

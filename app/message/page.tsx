@@ -80,7 +80,7 @@ export default async function MessageBox({searchParams}:{searchParams:Promise<{p
                             </p>
 
                             {message.imageUrl && (
-                                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                                <div className="flex items-center gap-2 text-gray-400 text-xs md:text-base">
                                     <AiFillPicture />
                                     <p>
                                         イラストメッセージが届いています
