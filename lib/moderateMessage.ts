@@ -51,7 +51,7 @@ ${content}
       thinkingConfig: {thinkingLevel: "minimal" as ThinkingLevel},
         maxOutputTokens:100,
         responseMimeType:"application/json",
-        httpOptions:{timeout:10_000}
+        httpOptions:{timeout:15_000}
       }
     })
     const text = response.text?.trim() ?? ""
