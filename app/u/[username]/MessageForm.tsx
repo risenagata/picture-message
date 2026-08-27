@@ -16,6 +16,7 @@ type Props={
 
 export default function MessageForm({receiverId}:Props){
     const [chars,setChars]=useState(0)
+    const [messageText,setMessageText]=useState("")
     const [canvasOpen,setCanvasOpen]=useState<boolean>(false)
     const [hasDrawing,setHasDrawing]=useState(false)
     const [state,formAction,isPending]=useActionState(createMessage,{success:false,message:""})
@@ -23,6 +24,7 @@ export default function MessageForm({receiverId}:Props){
 
     const handleChange=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
         setChars(e.target.value.length)
+        setMessageText(e.target.value)
     }
     const isOverLimit=chars > MAX_Chars
 
@@ -64,6 +66,8 @@ export default function MessageForm({receiverId}:Props){
     if(!state.message)return
     if(state.success){
         toast.success(state.message)
+        setMessageText("")
+        setChars(0)
     }else{
         toast.error(state.message)
     }
@@ -90,8 +94,9 @@ export default function MessageForm({receiverId}:Props){
                 <input type="hidden" name="receiverId" value={receiverId} />
                 <Textarea 
                 placeholder="これからも応援しています！"
-                className="flex-1 w-full max-w-2xl min-h-[300px]  p-4 text-base border-gray-400"
+                className="flex-1 w-full max-w-2xl min-h-[300px]  p-4 text-sm md:text-base border-gray-400"
                 name="message"
+                value={messageText}
                 onChange={handleChange}
                 />
 
