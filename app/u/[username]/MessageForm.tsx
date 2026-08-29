@@ -74,6 +74,7 @@ export default function MessageForm({receiverId}:Props){
         setCanvasOpen(!canvasOpen)
     }
 
+    //フォームが変更されたらトースト通知
    useEffect(()=>{
     if(!state.message)return
     if(state.success){
