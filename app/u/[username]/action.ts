@@ -6,7 +6,7 @@ import { MAX_Chars } from "@/shared/types/types"
 import { createClient } from "@/utils/supabase/server"
 
 
-type MessageState={
+export type MessageState={
     success:boolean,
     message:string
 }

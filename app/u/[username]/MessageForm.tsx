@@ -1,7 +1,7 @@
 'use client'
 
 import Textarea from "@/shared/components/Textarea"
-import createMessage from "./action"
+import createMessage, { MessageState } from "./action"
 import Button from "@/shared/components/Button"
 import { IoSendSharp } from "react-icons/io5"
 import { startTransition,useActionState, useEffect, useRef, useState } from "react"
@@ -19,7 +19,7 @@ export default function MessageForm({receiverId}:Props){
     const [messageText,setMessageText]=useState("")
     const [canvasOpen,setCanvasOpen]=useState<boolean>(false)
     const [hasDrawing,setHasDrawing]=useState(false)
-    const [state,formAction,isPending]=useActionState(createMessage,{success:false,message:""})
+    
     const canvasRef = useRef<CanvasRef>(null)
 
     const handleChange=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
@@ -27,6 +27,18 @@ export default function MessageForm({receiverId}:Props){
         setMessageText(e.target.value)
     }
     const isOverLimit=chars > MAX_Chars
+
+    //成功したときにフォームをクリアにする
+    const messageAction=async(prevState:MessageState,formData:FormData)=>{
+        const result=await createMessage(prevState,formData)
+        if(result.message){
+            setMessageText("")
+            setChars(0)
+        }
+        return result
+    }
+
+    const [state,formAction,isPending]=useActionState(messageAction,{success:false,message:""})
 
 
     const handleAction=async(formData:FormData)=>{
@@ -66,8 +78,7 @@ export default function MessageForm({receiverId}:Props){
     if(!state.message)return
     if(state.success){
         toast.success(state.message)
-        setMessageText("")
-        setChars(0)
+        
     }else{
         toast.error(state.message)
     }
