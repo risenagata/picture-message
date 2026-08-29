@@ -89,7 +89,6 @@ export default async function updateImage(_:ImageState,formData:FormData){
         .from("avatars")
         .remove([path])
 
-        console.log("removeError:",removeError)
 
         if (removeError) {
         console.error("古い画像の削除に失敗:", removeError.message);

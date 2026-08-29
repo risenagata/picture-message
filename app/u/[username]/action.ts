@@ -109,7 +109,6 @@ export default async function createMessage(_:MessageState,formData:FormData):Pr
             }
         }
         imagePath=data.path
-        console.log("画像アップロード成功：",data.path)
     }
 
     // メッセージ送信

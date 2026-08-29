@@ -16,7 +16,7 @@
             // html-to-image
             if(!targetRef.current)return
             const dataUrl=await toPng(targetRef.current)
-            console.log("dataUrl:",dataUrl)
+
 
             const link=document.createElement("a")
             link.download="message.png"
