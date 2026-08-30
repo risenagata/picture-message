@@ -11,8 +11,6 @@ export async function GET(request:Request){
     const error = searchParams.get("error");
 
 
-    console.log(request.url);
-
     //リンク無効・期限切れエラー
     if(error){
         return NextResponse.redirect(
