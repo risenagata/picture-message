@@ -10,20 +10,6 @@ const supabase = createClient(
 
 async function main() {
   
-  // const { data, error } = await supabase.auth.admin.createUser({
-  //   email: "test@sample.com",
-  //   password: "test1234",
-  //   email_confirm: true,
-  // })
-
-  // if (error) {
-  //   console.error("テストユーザー作成エラー:", error)
-  //   return
-  // }
-
-  // console.log("テストユーザーを作成しました")
-  // console.log("user.id:", data.user.id)
-  // console.log("email:", data.user.email)
 
  const { data, error } = await supabase.auth.admin.listUsers()
 
